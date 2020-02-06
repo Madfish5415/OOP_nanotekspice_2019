@@ -8,6 +8,8 @@
 #ifndef OOP_NANOTEKSPICE_2019_ACHIPSET_HPP
 #define OOP_NANOTEKSPICE_2019_ACHIPSET_HPP
 
+#include <vector>
+
 #include "AComponent.hpp"
 
 namespace nts {

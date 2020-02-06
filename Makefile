@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2019
-## ${PROJECT_NAME}
+## OOP_nanotekspice_2019
 ## File description:
 ## Makefile
 ##
