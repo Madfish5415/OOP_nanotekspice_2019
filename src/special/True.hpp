@@ -8,14 +8,13 @@
 #ifndef OOP_NANOTEKSPICE_2019_TRUE_HPP
 #define OOP_NANOTEKSPICE_2019_TRUE_HPP
 
-#include "../nts/AComponent.hpp"
+#include "../nts/SpecialComponent.hpp"
 
 namespace special {
 
-class True : public nts::AComponent {
+class True : public nts::SpecialComponent {
    public:
-    True() = default;
-    nts::Tristate compute(std::size_t) override;
+    True();
 };
 
 }  // namespace special

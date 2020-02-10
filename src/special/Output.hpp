@@ -8,13 +8,13 @@
 #ifndef OOP_NANOTEKSPICE_2019_OUTPUT_HPP
 #define OOP_NANOTEKSPICE_2019_OUTPUT_HPP
 
-#include "../nts/AComponent.hpp"
+#include "../nts/SpecialComponent.hpp"
 
 namespace special {
 
-class Output : public nts::AComponent {
+class Output : public nts::SpecialComponent {
    public:
-    Output() = default;
+    Output();
     nts::Tristate compute(std::size_t) override;
 };
 

@@ -8,18 +8,13 @@
 #ifndef OOP_NANOTEKSPICE_2019_INPUT_HPP
 #define OOP_NANOTEKSPICE_2019_INPUT_HPP
 
-#include "../nts/AComponent.hpp"
+#include "../nts/SpecialComponent.hpp"
 
 namespace special {
 
-class Input : public nts::AComponent {
+class Input : public nts::SpecialComponent {
    public:
-    Input() = default;
-    nts::Tristate compute(std::size_t pin) override;
-    void setState(nts::Tristate state);
-
-   private:
-    nts::Tristate _state = nts::UNDEFINED;
+    explicit Input(nts::Tristate state);
 };
 
 }  // namespace special

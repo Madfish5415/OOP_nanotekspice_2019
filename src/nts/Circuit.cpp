@@ -11,6 +11,38 @@
 
 #include "../special/Output.hpp"
 
+nts::Circuit::Circuit(const nts::Circuit& circuit) : Circuit()
+{
+    this->_value = circuit._value;
+    this->_links = circuit._links;
+
+    for (const auto& component : circuit._components)
+        this->_components[component.first] = component.second->clone();
+}
+
+nts::Circuit::~Circuit()
+{
+    for (const auto& component : _components) delete component.second;
+}
+
+nts::Circuit& nts::Circuit::operator=(const nts::Circuit& circuit)
+{
+    if (this == &circuit) return *this;
+
+    this->_value = circuit._value;
+    this->_links = circuit._links;
+
+    for (const auto& component : circuit._components)
+        this->_components[component.first] = component.second->clone();
+
+    return *this;
+}
+
+nts::IComponent* nts::Circuit::clone()
+{
+    return new Circuit(*this);
+}
+
 void nts::Circuit::addComponent(
     const std::string& name, nts::IComponent& component)
 {

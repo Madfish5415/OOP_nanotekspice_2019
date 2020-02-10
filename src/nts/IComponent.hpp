@@ -22,6 +22,7 @@ class IComponent {
     virtual void setLink(
         std::size_t pin, IComponent &other, std::size_t otherPin) = 0;
     virtual void dump() const = 0;
+    virtual IComponent* clone() = 0;
 };
 
 }  // namespace nts
