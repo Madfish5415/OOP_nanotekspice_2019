@@ -3,17 +3,46 @@ name: Pull Request
 on: [pull_request]
 
 jobs:
-  build:
-
+  build-ubuntu:
     runs-on: ubuntu-latest
     container: cyberryteam/epitech-docker:ubuntu
 
     steps:
-    - name: Make test
+    - uses: actions/checkout@v2
+
+    - name: Build
       run: make
-    - name: Make clean test
-      run: make clean
-    - name: Make fclean test
-      run: make fclean
-    - name: Make re test
-      run: make re
+
+  build-fedora:
+    runs-on: ubuntu-latest
+    container: cyberryteam/epitech-docker:fedora
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      run: make
+
+  test-ubuntu:
+    runs-on: ubuntu-latest
+    container: cyberryteam/epitech-docker:ubuntu
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Functional tests
+      run: make tests_sh
+    - name: Unit tests
+      run: make tests_run
+
+  test-fedora:
+    runs-on: ubuntu-latest
+    container: cyberryteam/epitech-docker:fedora
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Functional tests
+      run: make tests_sh
+    - name: Unit tests
+      run: make tests_run
