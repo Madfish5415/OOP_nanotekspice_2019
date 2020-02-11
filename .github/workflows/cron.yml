@@ -1,6 +1,8 @@
-name: Pull Request
+name: Cron
 
-on: [pull_request]
+on:
+  schedule:
+    - cron: "0 */6 * * *"
 
 jobs:
 
@@ -10,15 +12,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: master
 
     - name: Build
       run: make
-
-    - name: Functional tests
-      run: make tests_sh
-
-    - name: Unit tests
-      run: make tests_run
 
   ubuntu:
     runs-on: ubuntu-latest
@@ -26,12 +24,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: master
 
     - name: Build
       run: make
-
-    - name: Functional tests
-      run: make tests_sh
-
-    - name: Unit tests
-      run: make tests_run

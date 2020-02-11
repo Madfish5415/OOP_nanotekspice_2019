@@ -1,6 +1,12 @@
-name: Pull Request
+name: Push
 
-on: [pull_request]
+on:
+  push:
+    branches: [master]
+
+env:
+      REPOSITORY_OWNER: lucas.mathieux@epitech.eu
+      REPOSITORY_NAME: OOP_nanotekspice_2019
 
 jobs:
 
@@ -19,6 +25,14 @@ jobs:
 
     - name: Unit tests
       run: make tests_run
+
+    - name: Push
+      run: |
+        mkdir -p ~/.ssh/
+        ssh-keyscan git.epitech.eu >> ~/.ssh/known_hosts
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        git push git@git.epitech.eu:/$REPOSITORY_OWNER/$REPOSITORY_NAME HEAD:master --force
 
   ubuntu:
     runs-on: ubuntu-latest
