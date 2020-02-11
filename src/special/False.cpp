@@ -7,7 +7,6 @@
 
 #include "False.hpp"
 
-nts::Tristate special::False::compute(std::size_t)
+special::False::False() : SpecialComponent(nts::FALSE)
 {
-    return nts::FALSE;
 }

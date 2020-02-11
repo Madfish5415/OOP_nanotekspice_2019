@@ -15,6 +15,9 @@ namespace nts {
 class ALogicGate : public AComponent {
    public:
     ALogicGate() = default;
+    ALogicGate(const ALogicGate& logicGate);
+    ~ALogicGate() override = default;
+    ALogicGate& operator=(const ALogicGate& logicGate);
     Tristate compute(std::size_t) override;
 
    protected:

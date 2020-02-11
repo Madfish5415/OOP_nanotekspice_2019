@@ -17,11 +17,16 @@ namespace nts {
 
 class AComponent : public IComponent {
    public:
-    explicit AComponent(const std::string& value = "");
+    AComponent() = default;
+    explicit AComponent(const std::string& value);
+    AComponent(const AComponent& component);
+    ~AComponent() override = default;
+    AComponent& operator=(const AComponent& component);
     Tristate compute(std::size_t pin) override;
     void setLink(
         std::size_t pin, IComponent& other, std::size_t otherPin) override;
-    void dump() const override{};  // TODO: dump method
+    void dump() const override;
+    IComponent* clone() override;
 
    protected:
     std::string _value;

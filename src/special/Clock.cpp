@@ -7,9 +7,13 @@
 
 #include "Clock.hpp"
 
-nts::Tristate special::Clock::compute(std::size_t)
+special::Clock::Clock(nts::Tristate state) : SpecialComponent(state)
 {
-    nts::Tristate state = this->_state;
+}
+
+nts::Tristate special::Clock::compute(std::size_t pin)
+{
+    if (pin != 1) throw std::exception();  // TODO: Unknown pin
 
     switch (this->_state) {
         case nts::UNDEFINED:
@@ -22,10 +26,5 @@ nts::Tristate special::Clock::compute(std::size_t)
             break;
     }
 
-    return state;
-}
-
-void special::Clock::setState(nts::Tristate state)
-{
-    this->_state = state;
+    return SpecialComponent::compute(pin);
 }
