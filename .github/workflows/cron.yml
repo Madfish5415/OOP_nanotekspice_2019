@@ -5,9 +5,10 @@ on:
     - cron: "0 */6 * * *"
 
 jobs:
-  build-ubuntu:
+
+  fedora:
     runs-on: ubuntu-latest
-    container: cyberryteam/epitech-docker:ubuntu
+    container: cyberryteam/epitech-docker:fedora
 
     steps:
     - uses: actions/checkout@v2
@@ -17,9 +18,9 @@ jobs:
     - name: Build
       run: make
 
-  build-fedora:
+  ubuntu:
     runs-on: ubuntu-latest
-    container: cyberryteam/epitech-docker:fedora
+    container: cyberryteam/epitech-docker:ubuntu
 
     steps:
     - uses: actions/checkout@v2
