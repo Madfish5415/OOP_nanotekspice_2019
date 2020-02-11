@@ -5,162 +5,186 @@
 ## Makefile
 ##
 
-NAME			=		a.out
-LIB_NAME		=		libmy.so
-LIB_ST_NAME		=		libmy.a
-TEST_NAME		=		tests/unit_tests
+NAME				=		a.out
+LIB_NAME			=		libmy.so
+LIB_ST_NAME			=		libmy.a
+TEST_NAME			=		tests/unit_tests
+TEST_SH_NAME		=		tests/tests.sh
 
-NO_COLOR		=		\e[0;0m
-GREEN_COLOR		=		\e[0;32m
-RED_COLOR		=		\e[0;31m
-GREEN_B_COLOR	=		\e[1;32m
-RED_B_COLOR		=		\e[1;31m
+COV_DIR				=		obj
+INCL_DIR			=		src
+OBJ_DIR				=		obj
+SRC_DIR				=		src
+TEST_DIR			=		tests
 
-AR				=		ar rcs
-CC				=		g++
-RM				=		rm -rf
+AR					=		ar rcs
+CC					=		g++
+RM					=		rm -rf
 
-MAIN_SRC		=		main.cpp
+MAIN_SRC			=		main.cpp
 
-PROJ_SRC		=		src/chipset/C4071.cpp				\
-						src/chipset/C4081.cpp				\
-						src/gate/AND.cpp					\
-						src/gate/OR.cpp						\
-						src/nts/AChipset.cpp				\
-						src/nts/AComponent.cpp				\
-						src/nts/ALogicGate.cpp				\
-						src/nts/Circuit.cpp					\
-						src/nts/SpecialComponent.cpp		\
-						src/special/Clock.cpp				\
-						src/special/False.cpp				\
-						src/special/Input.cpp				\
-						src/special/Output.cpp				\
-						src/special/True.cpp				\
+PROJ_SRC			=		chipset/C4071.cpp				\
+							chipset/C4081.cpp				\
+							gate/AND.cpp					\
+							gate/OR.cpp						\
+							nts/AChipset.cpp				\
+							nts/AComponent.cpp				\
+							nts/ALogicGate.cpp				\
+							nts/Circuit.cpp					\
+							nts/SpecialComponent.cpp		\
+							special/Clock.cpp				\
+							special/False.cpp				\
+							special/Input.cpp				\
+							special/Output.cpp				\
+							special/True.cpp				\
 
-TEST_SRC		=		tests/test_src.cpp
+CFLAGS				+=		-I $(INCL_DIR)
+CFLAGS				+=		-W -Wall -Wextra -Werror
 
-MAIN_OBJ		=		$(MAIN_SRC:.cpp=.o)
+MAIN_OBJ			=		$(MAIN_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-PROJ_OBJ		=		$(PROJ_SRC:.cpp=.o)
+PROJ_OBJ			=		$(PROJ_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-TEST_OBJ		=		$(TEST_SRC:.cpp=.o)
+TEST_OBJ			=		$(TEST_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-TEST_COV		=		$(PROJ_SRC:.cpp=.gcda)	\
-						$(PROJ_SRC:.cpp=.gcno)	\
-						$(TEST_SRC:.cpp=.gcda)	\
-						$(TEST_SRC:.cpp=.gcno)	\
+TEST_COV			=		$(PROJ_SRC:%.cpp=$(COV_DIR)/%.gcda)	\
+							$(PROJ_SRC:%.cpp=$(COV_DIR)/%.gcno)	\
+							$(TEST_SRC:%.cpp=$(COV_DIR)/%.gcda)	\
+							$(TEST_SRC:%.cpp=$(COV_DIR)/%.gcno)	\
 
-INCL_DIR		=		"include/"
-LIB_DIR			=		"lib/my/"
-LIB_INCL_DIR	=		"include/"
+MAKEFLAGS			+=		--silent
 
-CPPFLAGS		+=		-I $(INCL_DIR)
-CPPFLAGS		+=		-I $(LIB_DIR)/$(LIB_INCL_DIR)
-CPPFLAGS		+=		-W -Wall -Wextra
+NO_COLOR			=		\e[0;0m
+GREEN_COLOR			=		\e[0;32m
+RED_COLOR			=		\e[0;31m
+GREEN_B_COLOR		=		\e[1;32m
+RED_B_COLOR			=		\e[1;31m
+YELLOW_B_COLOR		=		\e[1;33m
 
-MAKEFLAGS		+=		--silent
+$(OBJ_DIR)/%.o:		$(SRC_DIR)/%.cpp
+					mkdir -p $(@D)
+					$(CC) $(CFLAGS) -c $< -o $@ \
+					&& echo "$< $(GREEN_COLOR)successfully compiled$(NO_COLOR)" \
+					|| { echo "$< $(RED_COLOR)couldn't be compiled$(NO_COLOR)"; exit 1; }
 
-%.o:			%.cpp
-				$(CC) $(CPPFLAGS) -c -o $@ $< \
-				&& echo "$< $(GREEN_COLOR)successfully compiled$(NO_COLOR)" \
-				|| { echo "$< $(RED_COLOR)couldn't be compiled$(NO_COLOR)"; exit 1; }
+$(OBJ_DIR)/%.o:		$(TEST_DIR)/%.cpp
+					mkdir -p $(@D)
+					$(CC) $(CFLAGS) -c $< -o $@ \
+					&& echo "$< $(GREEN_COLOR)successfully compiled$(NO_COLOR)" \
+					|| { echo "$< $(RED_COLOR)couldn't be compiled$(NO_COLOR)"; exit 1; }
 
-all:			$(NAME)
+$(NAME):			$(MAIN_OBJ) $(PROJ_OBJ)
+					$(CC) $(MAIN_OBJ) $(PROJ_OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS) \
+					&& echo "$(GREEN_B_COLOR)$(NAME) successfully created$(NO_COLOR)" \
+					|| { echo "$(RED_B_COLOR)$(NAME) couldn't be created$(NO_COLOR)"; exit 1; }
 
-$(NAME):		$(MAIN_OBJ) $(PROJ_OBJ)
-				$(CC) $(MAIN_OBJ) $(PROJ_OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS) \
-				&& echo "$(GREEN_B_COLOR)$(NAME) successfully created$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)$(NAME) couldn't be created$(NO_COLOR)"; exit 1; }
+all:				$(NAME)
 
 clean:
-				$(RM) $(MAIN_OBJ) $(PROJ_OBJ)
+					$(RM) $(MAIN_OBJ) $(PROJ_OBJ)
 
-fclean:			clean
-				$(RM) $(NAME)
+fclean:				clean
+					$(RM) $(NAME)
 
-re:				fclean all
+re:					fclean all
 
-sweet:			all clean
+sweet:				all clean
 
-debug:			CPPFLAGS += -g3
-debug:			all
+debug:				CFLAGS += -g3
+debug:				all
 
-debug_re:		CPPFLAGS += -g3
-debug_re:		re
+debug_re:			CFLAGS += -g3
+debug_re:			re
 
-debug_sweet:	CPPFLAGS += -g3
-debug_sweet:	sweet
+debug_sweet:		CFLAGS += -g3
+debug_sweet:		sweet
 
-lib:			CPPFLAGS += -fPIC
-lib:			LDFLAGS += -shared
-lib:			$(PROJ_OBJ)
-				$(CC) $(PROJ_OBJ) -o $(LIB_NAME) $(LDFLAGS) $(LDLIBS) \
-				&& echo "$(GREEN_B_COLOR)$(LIB_NAME) successfully created$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)$(LIB_NAME) couldn't be created$(NO_COLOR)"; exit 1; }
+$(LIB_NAME):		CFLAGS += -fPIC
+$(LIB_NAME):		LDFLAGS += -shared
+$(LIB_NAME):		$(PROJ_OBJ)
+					$(CC) $(PROJ_OBJ) -o $(LIB_NAME) $(LDFLAGS) $(LDLIBS) \
+					&& echo "$(GREEN_B_COLOR)$(LIB_NAME) successfully created$(NO_COLOR)" \
+					|| { echo "$(RED_B_COLOR)$(LIB_NAME) couldn't be created$(NO_COLOR)"; exit 1; }
+
+lib:				$(LIB_NAME)
 
 lib_clean:
-				$(RM) $(PROJ_OBJ)
+					$(RM) $(PROJ_OBJ)
 
-lib_fclean:		lib_clean
-				$(RM) $(LIB_NAME)
+lib_fclean:			lib_clean
+					$(RM) $(LIB_NAME)
 
-lib_re:			lib_fclean lib
+lib_re:				lib_fclean lib
 
-lib_sweet:		lib lib_clean
+lib_sweet:			lib lib_clean
 
-lib_st:			$(PROJ_OBJ)
-				$(AR) $(LIB_ST_NAME) $(PROJ_OBJ) \
-				&& echo "$(GREEN_B_COLOR)$(LIB_ST_NAME) successfully created$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)$(LIB_ST_NAME) couldn't be created$(NO_COLOR)"; exit 1; }
+$(LIB_ST_NAME):		$(PROJ_OBJ)
+					$(AR) $(LIB_ST_NAME) $(PROJ_OBJ) \
+					&& echo "$(GREEN_B_COLOR)$(LIB_ST_NAME) successfully created$(NO_COLOR)" \
+					|| { echo "$(RED_B_COLOR)$(LIB_ST_NAME) couldn't be created$(NO_COLOR)"; exit 1; }
 
-lib_st_clean:	lib_clean
+lib_st:				$(LIB_ST_NAME)
 
-lib_st_fclean:	lib_st_clean
-				$(RM) $(LIB_ST_NAME)
+lib_st_clean:		lib_clean
 
-lib_st_re:		lib_st_fclean lib_st
+lib_st_fclean:		lib_st_clean
+					$(RM) $(LIB_ST_NAME)
 
-lib_st_sweet:	lib_st lib_st_clean
+lib_st_re:			lib_st_fclean lib_st
 
-tests_run:		CPPFLAGS += -fprofile-arcs -ftest-coverage
-tests_run:		LDLIBS += -lgcov -lcriterion
-tests_run:		$(PROJ_OBJ) $(TEST_OBJ)
-				$(CC) $(PROJ_OBJ) $(TEST_OBJ) -o $(TEST_NAME) $(LDFLAGS) $(LDLIBS) \
-				&& echo "$(GREEN_B_COLOR)$(TEST_NAME) successfully created$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)$(TEST_NAME) couldn't be created$(NO_COLOR)"; exit 1; }
-				$(TEST_NAME) \
-				&& echo "$(GREEN_B_COLOR)Unit tests passed successfully$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)Unit tests did not pass successfully$(NO_COLOR)"; exit 1; }
+lib_st_sweet:		lib_st lib_st_clean
 
-tests_clean:	clean
-				$(RM) $(TEST_OBJ)
-				$(RM) $(TEST_COV)
+$(TEST_NAME):		CFLAGS += -fprofile-arcs -ftest-coverage
+$(TEST_NAME):		LDLIBS += -lgcov -lcriterion
+$(TEST_NAME):		$(PROJ_OBJ) $(TEST_OBJ)
+					if [ -d $(TEST_DIR) ]; then \
+						$(CC) $(PROJ_OBJ) $(TEST_OBJ) -o $(TEST_NAME) $(LDFLAGS) $(LDLIBS) \
+						&& echo "$(GREEN_B_COLOR)$(TEST_NAME) successfully created$(NO_COLOR)" \
+						|| { echo "$(RED_B_COLOR)$(TEST_NAME) couldn't be created$(NO_COLOR)"; exit 1; } \
+					fi
 
-tests_fclean:	tests_clean
-				$(RM) $(TEST_NAME)
+tests_run:			$(TEST_NAME)
+					if [ ! -d $(TEST_DIR) ] || [ ! -f $(TEST_NAME) ]; then \
+						echo "$(YELLOW_B_COLOR)Unit tests not found$(NO_COLOR)"; \
+					else \
+						./$(TEST_NAME) \
+						&& echo "$(GREEN_B_COLOR)Unit tests passed successfully$(NO_COLOR)" \
+						|| { echo "$(RED_B_COLOR)Unit tests did not pass successfully$(NO_COLOR)"; exit 1; } \
+					fi
 
-tests_re:		tests_fclean tests_run
+tests_clean:		clean
+					$(RM) $(TEST_OBJ)
+					$(RM) $(TEST_COV)
 
-tests_sweet:	tests_run tests_clean
+tests_fclean:		tests_clean
+					$(RM) $(TEST_NAME)
 
-tests_sh:		sweet
-				sh tests/tests.sh $(NAME) \
-				&& echo "$(GREEN_B_COLOR)Functional tests passed successfully$(NO_COLOR)" \
-				|| { echo "$(RED_B_COLOR)Functional tests did not pass successfully$(NO_COLOR)"; exit 1; }
+tests_re:			tests_fclean tests_run
 
-full:			all lib lib_st
+tests_sweet:		tests_run tests_clean
 
-full_clean:		clean lib_clean lib_st_clean tests_clean
+tests_sh:			re
+					if [ ! -d $(TEST_DIR) ] || [ ! -f $(TEST_SH_NAME) ]; then \
+						echo "$(YELLOW_B_COLOR)Functional tests not found$(NO_COLOR)"; \
+					else \
+						sh $(TEST_SH_NAME) $(NAME) \
+						&& echo "$(GREEN_B_COLOR)Functional tests passed successfully$(NO_COLOR)" \
+						|| { echo "$(RED_B_COLOR)Functional tests did not pass successfully$(NO_COLOR)"; exit 1; } \
+					fi
 
-full_fclean:	fclean lib_fclean lib_st_fclean tests_fclean
+full:				all lib lib_st
 
-full_re:		re lib_re lib_st_re
+full_clean:			clean lib_clean lib_st_clean tests_clean
 
-full_sweet:		sweet lib_sweet lib_st_sweet
+full_fclean:		fclean lib_fclean lib_st_fclean tests_fclean
 
-.PHONY:			all clean fclean re sweet											\
-				debug debug_re debug_sweet											\
-				lib lib_clean lib_fclean lib_re lib_sweet							\
-				lib_st lib_st_clean lib_st_fclean lib_st_re lib_st_sweet			\
-				tests_run tests_clean tests_fclean tests_re tests_sweet tests_sh	\
-				full full_clean full_fclean full_re full_sweet						\
+full_re:			re lib_re lib_st_re
+
+full_sweet:			sweet lib_sweet lib_st_sweet
+
+.PHONY:				all clean fclean re sweet											\
+					debug debug_re debug_sweet											\
+					lib lib_clean lib_fclean lib_re lib_sweet							\
+					lib_st lib_st_clean lib_st_fclean lib_st_re lib_st_sweet			\
+					tests_run tests_clean tests_fclean tests_re tests_sweet tests_sh	\
+					full full_clean full_fclean full_re full_sweet						\
