@@ -12,7 +12,7 @@
 
 namespace gate {
 
-class NAND : public gate::AND {
+class NAND : public AND {
    public:
     NAND() = default;
     nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
