@@ -12,7 +12,7 @@
 
 namespace gate {
 
-   class NOR : public gate::OR {
+   class NOR : public OR {
    public:
     NOR() = default;
     nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
