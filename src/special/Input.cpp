@@ -7,12 +7,6 @@
 
 #include "Input.hpp"
 
-nts::Tristate special::Input::compute(std::size_t)
+special::Input::Input(nts::Tristate state) : SpecialComponent(state)
 {
-    return this->_state;
-}
-
-void special::Input::setState(nts::Tristate state)
-{
-    this->_state = state;
 }

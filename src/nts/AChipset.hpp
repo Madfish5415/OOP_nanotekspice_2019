@@ -17,11 +17,17 @@ namespace nts {
 class AChipset : public AComponent {
    public:
     AChipset() = default;
-
-   protected:
+    explicit AChipset(const std::string& value);
+    AChipset(const AChipset& chipset);
+    ~AChipset() override;
+    AChipset& operator=(const AChipset& chipset);
+    IComponent * clone() override;
     void addLogicGate(const std::vector<size_t>& inPins,
         const std::vector<size_t>& outPins, IComponent& logicGate);
-    void removeLogicGate(std::vector<size_t> outPins);
+    void removeLogicGate(const std::vector<size_t>& outPins);
+
+   private:
+    std::map<std::vector<size_t>, IComponent*> _logicGates;
 };
 
 }  // namespace nts

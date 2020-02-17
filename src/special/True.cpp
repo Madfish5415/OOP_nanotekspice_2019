@@ -7,7 +7,6 @@
 
 #include "True.hpp"
 
-nts::Tristate special::True::compute(std::size_t)
+special::True::True() : SpecialComponent(nts::TRUE)
 {
-    return nts::TRUE;
 }

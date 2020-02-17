@@ -18,6 +18,10 @@ namespace nts {
 class Circuit : public AComponent {
    public:
     Circuit() = default;
+    Circuit(const Circuit& circuit);
+    ~Circuit() override;
+    Circuit& operator=(const Circuit& circuit);
+    IComponent * clone() override;
     void addComponent(const std::string& name, IComponent& component);
     void removeComponent(const std::string& name);
     IComponent& getComponent(const std::string& name);

@@ -21,3 +21,19 @@ nts::Tristate nts::ALogicGate::compute(std::size_t)
 
     return state;
 }
+
+nts::ALogicGate::ALogicGate(const nts::ALogicGate& logicGate) : ALogicGate()
+{
+    this->_value = logicGate._value;
+    this->_links = logicGate._links;
+}
+
+nts::ALogicGate& nts::ALogicGate::operator=(const nts::ALogicGate& logicGate)
+{
+    if (this == &logicGate) return *this;
+
+    this->_value = logicGate._value;
+    this->_links = logicGate._links;
+
+    return *this;
+}
