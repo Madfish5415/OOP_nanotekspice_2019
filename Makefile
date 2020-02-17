@@ -35,6 +35,7 @@ PROJ_SRC		=		chipset/C4071.cpp				\
 						nts/AComponent.cpp				\
 						nts/ALogicGate.cpp				\
 						nts/Circuit.cpp					\
+						nts/SpecialComponent.cpp			\
 						special/Clock.cpp				\
 						special/False.cpp				\
 						special/Input.cpp				\
