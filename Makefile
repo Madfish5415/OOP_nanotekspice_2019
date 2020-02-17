@@ -23,23 +23,23 @@ RM					=		rm -rf
 
 MAIN_SRC			=		main.cpp
 
-PROJ_SRC		=		src/chipset/C4071.cpp				\
-						src/chipset/C4081.cpp				\
-						src/gate/AND.cpp					\
-						src/gate/NAND.cpp					\
-						src/gate/NOR.cpp					\
-						src/gate/NOT.cpp					\
-						src/gate/OR.cpp						\
-						src/gate/XOR.cpp					\
-						src/nts/AChipset.cpp				\
-						src/nts/AComponent.cpp				\
-						src/nts/ALogicGate.cpp				\
-						src/nts/Circuit.cpp					\
-						src/special/Clock.cpp				\
-						src/special/False.cpp				\
-						src/special/Input.cpp				\
-						src/special/Output.cpp				\
-						src/special/True.cpp				\
+PROJ_SRC		=		chipset/C4071.cpp				\
+						chipset/C4081.cpp				\
+						gate/AND.cpp					\
+						gate/NAND.cpp					\
+						gate/NOR.cpp					\
+						gate/NOT.cpp					\
+						gate/OR.cpp						\
+						gate/XOR.cpp					\
+						nts/AChipset.cpp				\
+						nts/AComponent.cpp				\
+						nts/ALogicGate.cpp				\
+						nts/Circuit.cpp					\
+						special/Clock.cpp				\
+						special/False.cpp				\
+						special/Input.cpp				\
+						special/Output.cpp				\
+						special/True.cpp				\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror
