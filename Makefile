@@ -25,7 +25,11 @@ MAIN_SRC		=		main.cpp
 PROJ_SRC		=		src/chipset/C4071.cpp				\
 						src/chipset/C4081.cpp				\
 						src/gate/AND.cpp					\
+						src/gate/NAND.cpp					\
+						src/gate/NOR.cpp					\
+						src/gate/NOT.cpp					\
 						src/gate/OR.cpp						\
+						src/gate/XOR.cpp					\
 						src/nts/AChipset.cpp				\
 						src/nts/AComponent.cpp				\
 						src/nts/ALogicGate.cpp				\
