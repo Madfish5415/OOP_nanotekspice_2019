@@ -1,0 +1,57 @@
+@startuml
+
+interface IComponent {
+    + virtual void compute() = 0
+    + virtual void dump() = 0
+    + virtual void setLink(size_t, Link *) = 0
+    + virtual Link *getLink(size_t) = 0
+}
+
+abstract AComponent {
+    + void compute() override = 0
+    + void dump() override
+    + void setLink(size_t, Link *) override
+    + Link *getLink(size_t) override
+    - std::map<size_t, Pin *> pins
+    - Description desc
+}
+
+class Container {
+    + void compute() override
+    + void addComponent()
+    + void removeComponent()
+    - map<string, IComponent *> components
+}
+
+class Logic {
+    + void compute() override
+    + void operate()
+}
+
+enum Pin_Type {
+    IN,
+    OUT,
+    VIRTUALIN,
+    VIRTUALOUT
+}
+
+class Pin {
+    + Pin_Type type
+    + Tristate value
+    + bool computed
+    + Link *link
+}
+
+class Description {
+    + string type
+    + vector<size_t> inPins
+    + vector<size_t> outPins
+}
+
+
+
+IComponent <|-- AComponent
+AComponent <|-- Container
+AComponent <|-- Logic
+
+@enduml
