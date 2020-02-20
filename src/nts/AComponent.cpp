@@ -18,7 +18,7 @@ nts::AComponent::AComponent(const std::string& type,
     this->_OUTs = OUTs;
 
     for (const auto& in : this->_INs)
-        this->_pins[in] = {};
+        this->_pins[in] = nullptr;
 }
 
 void nts::AComponent::dump()
@@ -46,7 +46,7 @@ const std::set<std::size_t>& nts::AComponent::getOUTs() const
     return this->_OUTs;
 }
 
-const nts::Link& nts::AComponent::getLink(std::size_t pin) const
+const nts::Link* nts::AComponent::getLink(std::size_t pin) const
 {
     if (this->_pins.count(pin) == 0)
         throw std::exception();  // TODO: Custom error class
@@ -57,11 +57,10 @@ const nts::Link& nts::AComponent::getLink(std::size_t pin) const
 void nts::AComponent::setLink(
     std::size_t pin, IComponent& other, size_t otherPin)
 {
-    if (this->getLink(pin).other != nullptr)
+    if (this->getLink(pin) != nullptr)
         throw std::exception();  // TODO: Custom error class
 
-    this->_pins[pin].other = &other;
-    this->_pins[pin].otherPin = otherPin;
+    this->_pins[pin] = new Link(&other, otherPin);
 }
 
 const std::string& nts::AComponent::getValue() const

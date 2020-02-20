@@ -36,6 +36,7 @@ PROJ_SRC			=		gate/AND.cpp			\
                             nts/Circuit.cpp			\
                             nts/Container.cpp		\
                             nts/Factory.cpp			\
+                            nts/Link.cpp			\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror

@@ -37,9 +37,9 @@ nts::Tristate gate::XOR::compute(std::size_t pin)
         if (this->_states.count(*it) == 0) {
             this->_states[*it] = nts::UNDEFINED;
 
-            const nts::Link& link = this->getLink(*it);
+            const nts::Link* link = this->getLink(*it);
 
-            this->_states[*it] = link.other->compute(link.otherPin);
+            this->_states[*it] = link->getOther()->compute(link->getOtherPin());
         }
 
         nts::Tristate value = this->_states[*it];
