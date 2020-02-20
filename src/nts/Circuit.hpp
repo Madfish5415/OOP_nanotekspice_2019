@@ -8,29 +8,25 @@
 #ifndef OOP_NANOTEKSPICE_2019_CIRCUIT_HPP
 #define OOP_NANOTEKSPICE_2019_CIRCUIT_HPP
 
-#include <map>
-#include <string>
-
-#include "AComponent.hpp"
+#include "Container.hpp"
 
 namespace nts {
 
-class Circuit : public AComponent {
+class Circuit : public Container {
    public:
-    Circuit() = default;
-    Circuit(const Circuit& circuit);
-    ~Circuit() override;
-    Circuit& operator=(const Circuit& circuit);
-    IComponent * clone() override;
-    void addComponent(const std::string& name, IComponent& component);
-    void removeComponent(const std::string& name);
-    IComponent& getComponent(const std::string& name);
+    Circuit();
+
+   public:
     void display();
+    void input(const std::string &name, const std::string &value);
     void simulate();
 
-   private:
-    std::map<std::string, IComponent*> _components;
+   protected:
     std::map<std::string, Tristate> _results;
+
+   private:
+    std::map<std::string, IComponent *> filterComponents(
+        const std::string &type) const;
 };
 
 }  // namespace nts
