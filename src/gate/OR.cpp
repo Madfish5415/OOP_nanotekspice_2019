@@ -31,10 +31,9 @@ nts::Tristate gate::OR::compute(std::size_t pin)
 
     for (std::size_t i = 0; it != ins.end(); ++i, ++it) {
         if (this->_states.count(*it) == 0) {
-            this->_states[*it] = nts::UNDEFINED;
-
             const nts::Link* link = this->getLink(*it);
 
+            this->_states[*it] = nts::UNDEFINED;
             this->_states[*it] = link->getOther()->compute(link->getOtherPin());
         }
 

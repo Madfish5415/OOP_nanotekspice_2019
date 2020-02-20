@@ -22,6 +22,7 @@ nts::Tristate io::Output::compute(std::size_t pin)
         if (link == nullptr)
             throw std::exception();  // TODO: Custom class error
 
+        this->_states[pin] = nts::UNDEFINED;
         this->_states[pin] = link->getOther()->compute(link->getOtherPin());
     }
 
