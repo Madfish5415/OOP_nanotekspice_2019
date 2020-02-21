@@ -20,6 +20,6 @@ class Output : public nts::AComponent {
     nts::Tristate compute(std::size_t pin) override;
 };
 
-}
+}  // namespace io
 
 #endif  // OOP_NANOTEKSPICE_2019_OUTPUT_HPP

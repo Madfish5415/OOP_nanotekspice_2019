@@ -27,17 +27,18 @@ nts::Tristate gate::AND::compute(std::size_t pin)
 
     auto ins = this->getINs();
     auto it = ins.begin();
+    const auto& states = this->getStates();
     nts::Tristate result = nts::UNDEFINED;
 
     for (std::size_t i = 0; it != ins.end(); ++i, ++it) {
-        if (this->_states.count(*it) == 0) {
+        if (states.count(*it) == 0) {
             const nts::Link* link = this->getLink(*it);
 
-            this->_states[*it] = nts::UNDEFINED;
-            this->_states[*it] = link->getOther()->compute(link->getOtherPin());
+            this->setState(*it, nts::UNDEFINED);
+            this->setState(*it, link->getOther()->compute(link->getOtherPin()));
         }
 
-        nts::Tristate value = this->_states[*it];
+        nts::Tristate value = states.at(*it);
 
         if (i == 0)
             result = value;

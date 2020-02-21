@@ -27,10 +27,15 @@ class AComponent : public IComponent {
     const std::string &getType() const override;
     const std::set<std::size_t> &getINs() const override;
     const std::set<std::size_t> &getOUTs() const override;
-    const Link* getLink(std::size_t pin) const override;
-    void setLink(std::size_t pin, IComponent& other, size_t otherPin) override;
+    const Link *getLink(std::size_t pin) const override;
+    void setLink(std::size_t pin, IComponent &other, size_t otherPin) override;
     const std::string &getValue() const override;
     void setValue(const std::string &value) override;
+
+   public:
+    void addPin(size_t pin, Link *link);
+    void setState(size_t pin, Tristate state);
+    const std::map<std::size_t, Tristate> &getStates() const;
 
    protected:
     const std::string _type;

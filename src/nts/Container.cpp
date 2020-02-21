@@ -11,8 +11,7 @@ nts::Container::Container(const std::string& type, const std::set<size_t>& INs,
     const std::set<size_t>& OUTs)
     : AComponent(type, INs, OUTs)
 {
-    for (const auto& out : this->_OUTs)
-        this->_pins[out] = nullptr;
+    for (const auto& out : this->getOUTs()) this->addPin(out, nullptr);
 }
 
 nts::Tristate nts::Container::compute(std::size_t pin)
@@ -20,17 +19,19 @@ nts::Tristate nts::Container::compute(std::size_t pin)
     if (this->getOUTs().count(pin) == 0)
         throw std::exception();  // TODO: Custom error class
 
-    if (this->_states.count(pin) == 0) {
-        const Link* link = this->getLink(pin);
+    const auto& states = this->getStates();
+
+    if (states.count(pin) == 0) {
+        const nts::Link* link = this->getLink(pin);
 
         if (link == nullptr)
             throw std::exception();  // TODO: Custom class error
 
-        this->_states[pin] = nts::UNDEFINED;
-        this->_states[pin] = link->getOther()->compute(link->getOtherPin());
+        this->setState(pin, nts::UNDEFINED);
+        this->setState(pin, link->getOther()->compute(link->getOtherPin()));
     }
 
-    return this->_states[pin];
+    return states.at(pin);
 }
 
 void nts::Container::dump()

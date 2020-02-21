@@ -14,7 +14,7 @@ io::True::True() : AComponent("True", {}, {1})
 nts::Tristate io::True::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
-        throw std::exception(); // TODO: Custom error class
+        throw std::exception();  // TODO: Custom error class
 
     return nts::TRUE;
 }

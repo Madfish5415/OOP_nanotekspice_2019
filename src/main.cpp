@@ -16,7 +16,7 @@ void registerAll()
 {
     nts::Factory::Register(
         "Clock", [](auto) -> std::unique_ptr<nts::IComponent> {
-          return std::unique_ptr<nts::IComponent>(new io::Clock());
+            return std::unique_ptr<nts::IComponent>(new io::Clock());
         });
     nts::Factory::Register(
         "Input", [](auto) -> std::unique_ptr<nts::IComponent> {
@@ -24,7 +24,7 @@ void registerAll()
         });
     nts::Factory::Register(
         "Output", [](auto) -> std::unique_ptr<nts::IComponent> {
-          return std::unique_ptr<nts::IComponent>(new io::Output());
+            return std::unique_ptr<nts::IComponent>(new io::Output());
         });
 }
 

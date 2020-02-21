@@ -17,8 +17,7 @@ nts::AComponent::AComponent(const std::string& type,
     this->_INs = INs;
     this->_OUTs = OUTs;
 
-    for (const auto& in : this->_INs)
-        this->_pins[in] = nullptr;
+    for (const auto& in : this->_INs) this->_pins[in] = nullptr;
 }
 
 void nts::AComponent::dump()
@@ -71,4 +70,22 @@ const std::string& nts::AComponent::getValue() const
 void nts::AComponent::setValue(const std::string& value)
 {
     this->_value = value;
+}
+
+void nts::AComponent::addPin(size_t pin, nts::Link* link)
+{
+    if (this->_pins.count(pin))
+        throw std::exception();  // TODO: Custom class error
+
+    this->_pins[pin] = link;
+}
+
+void nts::AComponent::setState(size_t pin, nts::Tristate state)
+{
+    this->_states[pin] = state;
+}
+
+const std::map<std::size_t, nts::Tristate>& nts::AComponent::getStates() const
+{
+    return this->_states;
 }
