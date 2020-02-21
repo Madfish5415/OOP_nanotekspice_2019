@@ -19,11 +19,19 @@ void registerAll()
             return std::unique_ptr<nts::IComponent>(new io::Clock());
         });
     nts::Factory::Register(
+        "False", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new io::Input());
+        });
+    nts::Factory::Register(
         "Input", [](auto) -> std::unique_ptr<nts::IComponent> {
             return std::unique_ptr<nts::IComponent>(new io::Input());
         });
     nts::Factory::Register(
         "Output", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new io::Output());
+        });
+    nts::Factory::Register(
+        "True", [](auto) -> std::unique_ptr<nts::IComponent> {
             return std::unique_ptr<nts::IComponent>(new io::Output());
         });
 }
@@ -35,26 +43,28 @@ int main()
     std::unique_ptr<nts::IComponent> input1 = nts::Factory::Create("Input");
     std::unique_ptr<nts::IComponent> clock1 = nts::Factory::Create("Clock");
     std::unique_ptr<nts::IComponent> output1 = nts::Factory::Create("Output");
-    gate::AND and1 = gate::AND({1, 2}, {3});
-    gate::AND and2 = gate::AND({1, 2}, {3});
+    std::unique_ptr<nts::IComponent> and1 =
+        std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
+    std::unique_ptr<nts::IComponent> and2 =
+        std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
     nts::Circuit circuit = nts::Circuit();
 
     clock1->setValue("1");
     input1->setValue("1");
 
-    and1.setLink(1, *input1, 1);
-    and1.setLink(2, and2, 3);
+    and1->setLink(1, *input1, 1);
+    and1->setLink(2, *and2, 3);
 
-    and2.setLink(1, *clock1, 1);
-    and2.setLink(2, and1, 3);
+    and2->setLink(1, *clock1, 1);
+    and2->setLink(2, *and1, 3);
 
-    output1->setLink(1, and2, 3);
+    output1->setLink(1, *and2, 3);
 
-    circuit.addComponent("clock1", *clock1);
-    circuit.addComponent("input1", *input1);
+    circuit.addComponent("clock1", clock1);
+    circuit.addComponent("input1", input1);
     circuit.addComponent("and1", and1);
     circuit.addComponent("and2", and2);
-    circuit.addComponent("output1", *output1);
+    circuit.addComponent("output1", output1);
 
     circuit.simulate();
     circuit.display();

@@ -7,6 +7,7 @@
 
 #include "Circuit.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 nts::Circuit::Circuit() : Container("Circuit", {}, {})
@@ -36,44 +37,34 @@ void nts::Circuit::display()
 
 void nts::Circuit::input(const std::string& name, const std::string& value)
 {
-    auto inputs = this->filterComponents("Input");
+    const auto& components = this->getComponents();
 
-    if (inputs.count(name) == 0)
+    if (components.count(name) == 0)
+        throw std::exception();  // TODO: Custom error class
+    if (components.at(name)->getType() != "Input")
         throw std::exception();  // TODO: Custom error class
 
-    inputs[name]->setValue(value);
+    components.at(name)->setValue(value);
 }
 
 void nts::Circuit::simulate()
 {
-    auto outputs = this->filterComponents("Output");
-
-    for (const auto& output : outputs)
-        this->_results[output.first] = output.second->compute(1);
-
-    auto clocks = this->filterComponents("Clock");
-
-    for (const auto& clock : clocks) {
-        std::string value = clock.second->getValue();
-
-        if (value == "0")
-            value = "1";
-        else if (value == "1")
-            value = "0";
-
-        clock.second->setValue(value);
-    }
-}
-
-std::map<std::string, nts::IComponent*> nts::Circuit::filterComponents(
-    const std::string& type) const
-{
-    auto components = this->getComponents();
-    std::map<std::string, IComponent*> filtered;
+    const auto& components = this->getComponents();
 
     for (const auto& component : components)
-        if (component.second->getType() == type)
-            filtered[component.first] = component.second;
+        if (component.second->getType() == "Output")
+            this->_results[component.first] = component.second->compute(1);
 
-    return filtered;
+    for (const auto& component : components) {
+        if (component.second->getType() == "Clock") {
+            std::string value = component.second->getValue();
+
+            if (value == "0")
+                value = "1";
+            else if (value == "1")
+                value = "0";
+
+            component.second->setValue(value);
+        }
+    }
 }

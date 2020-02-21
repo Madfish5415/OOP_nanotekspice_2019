@@ -11,18 +11,15 @@ nts::Container::Container(const std::string& type, const std::set<size_t>& INs,
     const std::set<size_t>& OUTs)
     : AComponent(type, INs, OUTs)
 {
-    for (const auto& out : this->getOUTs()) this->addPin(out, nullptr);
+    for (const auto& out : this->getOUTs()) this->addPin(out);
 }
 
 nts::Tristate nts::Container::compute(std::size_t pin)
 {
-    if (this->getOUTs().count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
-
     const auto& states = this->getStates();
 
     if (states.count(pin) == 0) {
-        const nts::Link* link = this->getLink(pin);
+        const Link::pointer link = this->getLink(pin);
 
         if (link == nullptr)
             throw std::exception();  // TODO: Custom class error
@@ -49,26 +46,15 @@ void nts::Container::reset()
 }
 
 void nts::Container::addComponent(
-    const std::string& name, nts::IComponent& component)
+    const std::string& name, IComponent::pointer& component)
 {
     if (this->_components.count(name))
         throw std::exception();  // TODO: Custom class error
 
-    this->_components[name] = &component;
+    this->_components[name] = std::move(component);
 }
 
-const std::map<std::string, nts::IComponent*>& nts::Container::getComponents()
-    const
+const nts::Container::Components& nts::Container::getComponents() const
 {
     return this->_components;
-}
-
-void nts::Container::removeComponent(const std::string& name)
-{
-    if (this->_components.count(name) == 0)
-        throw std::exception();  // TODO: Custom class error
-
-    delete this->_components[name];
-
-    this->_components.erase(name);
 }

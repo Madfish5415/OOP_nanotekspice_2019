@@ -17,7 +17,7 @@ namespace nts {
 
 class AComponent : public IComponent {
    public:
-    AComponent(const std::string &type, const std::set<size_t> &INs,
+    AComponent(std::string type, const std::set<size_t> &INs,
         const std::set<size_t> &OUTs);
 
    public:
@@ -27,21 +27,21 @@ class AComponent : public IComponent {
     const std::string &getType() const override;
     const std::set<std::size_t> &getINs() const override;
     const std::set<std::size_t> &getOUTs() const override;
-    const Link *getLink(std::size_t pin) const override;
+    Link::pointer getLink(std::size_t pin) const override;
     void setLink(std::size_t pin, IComponent &other, size_t otherPin) override;
     const std::string &getValue() const override;
     void setValue(const std::string &value) override;
 
    public:
-    void addPin(size_t pin, Link *link);
+    void addPin(size_t pin);
     void setState(size_t pin, Tristate state);
     const std::map<std::size_t, Tristate> &getStates() const;
 
-   protected:
+   private:
     const std::string _type;
     std::set<std::size_t> _INs;
     std::set<std::size_t> _OUTs;
-    std::map<std::size_t, Link *> _pins;
+    std::map<std::size_t, Link::pointer> _pins;
     std::map<std::size_t, Tristate> _states;
     std::string _value;
 };

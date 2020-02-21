@@ -7,7 +7,7 @@
 
 #include "OR.hpp"
 
-static nts::Tristate operate(nts::Tristate t1, nts::Tristate t2)
+static nts::Tristate operate(const nts::Tristate t1, const nts::Tristate t2)
 {
     if ((t1 == nts::TRUE) || (t2 == nts::TRUE)) return nts::TRUE;
     if ((t1 == nts::FALSE) && (t2 == nts::FALSE)) return nts::FALSE;
@@ -25,20 +25,20 @@ nts::Tristate gate::OR::compute(std::size_t pin)
     if (this->getOUTs().count(pin) == 0)
         throw std::exception();  // TODO: Custom error class
 
-    auto ins = this->getINs();
+    const auto& ins = this->getINs();
     auto it = ins.begin();
-    auto states = this->getStates();
+    const auto& states = this->getStates();
     nts::Tristate result = nts::UNDEFINED;
 
     for (std::size_t i = 0; it != ins.end(); ++i, ++it) {
         if (states.count(*it) == 0) {
-            const nts::Link* link = this->getLink(*it);
+            const nts::Link::pointer link = this->getLink(*it);
 
             this->setState(*it, nts::UNDEFINED);
             this->setState(*it, link->getOther()->compute(link->getOtherPin()));
         }
 
-        nts::Tristate value = states[*it];
+        const nts::Tristate value = states.at(*it);
 
         if (i == 0)
             result = value;

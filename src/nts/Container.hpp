@@ -8,25 +8,33 @@
 #ifndef OOP_NANOTEKSPICE_2019_CONTAINER_HPP
 #define OOP_NANOTEKSPICE_2019_CONTAINER_HPP
 
+#include <memory>
+
 #include "AComponent.hpp"
 
 namespace nts {
 
 class Container : public AComponent {
+   protected:
+    typedef std::map<std::string, IComponent::pointer> Components;
+
    public:
     Container(const std::string &type, const std::set<size_t> &INs,
         const std::set<size_t> &OUTs);
+
+   public:
     Tristate compute(std::size_t pin) override;
     void dump() override;
     void reset() override;
 
    public:
-    void addComponent(const std::string &name, IComponent &component);
-    const std::map<std::string, IComponent *> &getComponents() const;
-    void removeComponent(const std::string &name);
+    void addComponent(const std::string &name, IComponent::pointer &component);
 
    protected:
-    std::map<std::string, IComponent *> _components;
+    Components _components;
+
+   public:
+    const Components &getComponents() const;
 };
 
 }  // namespace nts

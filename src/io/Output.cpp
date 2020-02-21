@@ -19,7 +19,7 @@ nts::Tristate io::Output::compute(std::size_t pin)
     const auto& states = this->getStates();
 
     if (states.count(pin) == 0) {
-        const nts::Link* link = this->getLink(pin);
+        const nts::Link::pointer link = this->getLink(pin);
 
         if (link == nullptr)
             throw std::exception();  // TODO: Custom class error

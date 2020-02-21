@@ -10,6 +10,8 @@
 
 #include "Container.hpp"
 
+#include <vector>
+
 namespace nts {
 
 class Circuit : public Container {
@@ -23,10 +25,6 @@ class Circuit : public Container {
 
    protected:
     std::map<std::string, Tristate> _results;
-
-   private:
-    std::map<std::string, IComponent *> filterComponents(
-        const std::string &type) const;
 };
 
 }  // namespace nts

@@ -9,10 +9,12 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
+#include <utility>
 
-nts::AComponent::AComponent(const std::string& type,
-    const std::set<size_t>& INs, const std::set<size_t>& OUTs)
-    : _type(type)
+nts::AComponent::AComponent(
+    std::string type, const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+    : _type(std::move(type))
 {
     this->_INs = INs;
     this->_OUTs = OUTs;
@@ -23,6 +25,15 @@ nts::AComponent::AComponent(const std::string& type,
 void nts::AComponent::dump()
 {
     std::cout << "Type: " << this->getType() << std::endl;
+    std::cout << "INs:";
+
+    for (const auto& in : this->_INs) std::cout << " " << in;
+    std::cout << std::endl;
+
+    std::cout << "OUTs:";
+
+    for (const auto& out : this->_OUTs) std::cout << " " << out;
+    std::cout << std::endl;
 }
 
 void nts::AComponent::reset()
@@ -45,7 +56,7 @@ const std::set<std::size_t>& nts::AComponent::getOUTs() const
     return this->_OUTs;
 }
 
-const nts::Link* nts::AComponent::getLink(std::size_t pin) const
+nts::Link::pointer nts::AComponent::getLink(std::size_t pin) const
 {
     if (this->_pins.count(pin) == 0)
         throw std::exception();  // TODO: Custom error class
@@ -59,7 +70,7 @@ void nts::AComponent::setLink(
     if (this->getLink(pin) != nullptr)
         throw std::exception();  // TODO: Custom error class
 
-    this->_pins[pin] = new Link(&other, otherPin);
+    this->_pins[pin] = std::make_shared<Link>(&other, otherPin);
 }
 
 const std::string& nts::AComponent::getValue() const
@@ -72,12 +83,12 @@ void nts::AComponent::setValue(const std::string& value)
     this->_value = value;
 }
 
-void nts::AComponent::addPin(size_t pin, nts::Link* link)
+void nts::AComponent::addPin(size_t pin)
 {
     if (this->_pins.count(pin))
         throw std::exception();  // TODO: Custom class error
 
-    this->_pins[pin] = link;
+    this->_pins[pin] = nullptr;
 }
 
 void nts::AComponent::setState(size_t pin, nts::Tristate state)
