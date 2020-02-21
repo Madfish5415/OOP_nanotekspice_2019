@@ -12,6 +12,8 @@
 #include <memory>
 #include <utility>
 
+#include "Error.hpp"
+
 nts::AComponent::AComponent(
     std::string type, const std::set<size_t>& INs, const std::set<size_t>& OUTs)
     : _type(std::move(type))
@@ -59,7 +61,7 @@ const std::set<std::size_t>& nts::AComponent::getOUTs() const
 nts::Link::pointer nts::AComponent::getLink(std::size_t pin) const
 {
     if (this->_pins.count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw Error(this->getType(), "Pin doesn't exist");
 
     return this->_pins.at(pin);
 }
@@ -68,7 +70,7 @@ void nts::AComponent::setLink(
     std::size_t pin, IComponent& other, size_t otherPin)
 {
     if (this->getLink(pin) != nullptr)
-        throw std::exception();  // TODO: Custom error class
+        throw Error(this->getType(), "Pin already linked");
 
     this->_pins[pin] = std::make_shared<Link>(&other, otherPin);
 }
@@ -86,7 +88,7 @@ void nts::AComponent::setValue(const std::string& value)
 void nts::AComponent::addPin(size_t pin)
 {
     if (this->_pins.count(pin))
-        throw std::exception();  // TODO: Custom class error
+        throw Error(this->getType(), "Pin already exist");
 
     this->_pins[pin] = nullptr;
 }

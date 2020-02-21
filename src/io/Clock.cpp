@@ -9,6 +9,8 @@
 
 #include <algorithm>
 
+#include "nts/Error.hpp"
+
 io::Clock::Clock() : AComponent("Clock", {}, {1})
 {
 }
@@ -16,7 +18,7 @@ io::Clock::Clock() : AComponent("Clock", {}, {1})
 nts::Tristate io::Clock::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw nts::Error(this->getType(), "Pin doesn't exist");
 
     const std::string& value = this->getValue();
 

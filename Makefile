@@ -35,6 +35,7 @@ PROJ_SRC			=		gate/AND.cpp			\
 							nts/AComponent.cpp		\
                             nts/Circuit.cpp			\
                             nts/Container.cpp		\
+                            nts/Error.cpp			\
                             nts/Factory.cpp			\
                             nts/Link.cpp			\
 

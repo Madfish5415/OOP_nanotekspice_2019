@@ -7,11 +7,13 @@
 
 #include "Factory.hpp"
 
+#include "Error.hpp"
+
 std::unique_ptr<nts::IComponent> nts::Factory::Create(
     const std::string& type, const std::string& value)
 {
     if (constructors().count(type) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw Error("Factory", "Component isn't registered");
 
     return (constructors()[type])(value);
 }
@@ -20,7 +22,7 @@ void nts::Factory::Register(
     const std::string& type, const nts::Constructor& constructor)
 {
     if (constructors().count(type))
-        throw std::exception();  // TODO: Custom error class
+        throw Error("Factory", "Component already registered");
 
     constructors()[type] = constructor;
 }

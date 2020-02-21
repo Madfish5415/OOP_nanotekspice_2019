@@ -7,6 +7,8 @@
 
 #include "NOT.hpp"
 
+#include "nts/Error.hpp"
+
 static nts::Tristate operate(const nts::Tristate t)
 {
     if (t == nts::TRUE) return nts::FALSE;
@@ -23,7 +25,7 @@ gate::NOT::NOT(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
 nts::Tristate gate::NOT::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw nts::Error(this->getType(), "Pin doesn't exist");
 
     const auto& ins = this->getINs();
     auto it = ins.begin();
@@ -33,6 +35,9 @@ nts::Tristate gate::NOT::compute(std::size_t pin)
     for (std::size_t i = 0; it != ins.end(); ++i, ++it) {
         if (states.count(*it) == 0) {
             const nts::Link::pointer link = this->getLink(*it);
+
+            if (link == nullptr)
+                throw nts::Error(this->getType(), "Pin isn't linked");
 
             this->setState(*it, nts::UNDEFINED);
             this->setState(*it, link->getOther()->compute(link->getOtherPin()));

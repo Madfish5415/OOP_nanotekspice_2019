@@ -7,6 +7,8 @@
 
 #include "Input.hpp"
 
+#include "nts/Error.hpp"
+
 io::Input::Input() : AComponent("Input", {}, {1})
 {
 }
@@ -14,7 +16,7 @@ io::Input::Input() : AComponent("Input", {}, {1})
 nts::Tristate io::Input::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw nts::Error(this->getType(), "Pin doesn't exist");
 
     const std::string& value = this->getValue();
 

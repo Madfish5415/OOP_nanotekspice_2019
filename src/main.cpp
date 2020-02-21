@@ -34,6 +34,10 @@ void registerAll()
         "True", [](auto) -> std::unique_ptr<nts::IComponent> {
             return std::unique_ptr<nts::IComponent>(new io::Output());
         });
+    nts::Factory::Register(
+        "True", [](auto) -> std::unique_ptr<nts::IComponent> {
+          return std::unique_ptr<nts::IComponent>(new io::Output());
+        });
 }
 
 int main()

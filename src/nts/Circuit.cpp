@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "Error.hpp"
+
 nts::Circuit::Circuit() : Container("Circuit", {}, {})
 {
 }
@@ -40,9 +42,9 @@ void nts::Circuit::input(const std::string& name, const std::string& value)
     const auto& components = this->getComponents();
 
     if (components.count(name) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw Error(this->getType(), "Component doesn't exist");
     if (components.at(name)->getType() != "Input")
-        throw std::exception();  // TODO: Custom error class
+        throw Error(this->getType(), "Component isn't an Input");
 
     components.at(name)->setValue(value);
 }

@@ -7,6 +7,8 @@
 
 #include "Output.hpp"
 
+#include <nts/Error.hpp>
+
 io::Output::Output() : AComponent("Output", {1}, {})
 {
 }
@@ -14,7 +16,7 @@ io::Output::Output() : AComponent("Output", {1}, {})
 nts::Tristate io::Output::compute(std::size_t pin)
 {
     if (this->getINs().count(pin) == 0)
-        throw std::exception();  // TODO: Custom error class
+        throw nts::Error(this->getType(), "Pin doesn't exist");
 
     const auto& states = this->getStates();
 
@@ -22,7 +24,7 @@ nts::Tristate io::Output::compute(std::size_t pin)
         const nts::Link::pointer link = this->getLink(pin);
 
         if (link == nullptr)
-            throw std::exception();  // TODO: Custom class error
+            throw nts::Error(this->getType(), "Pin isn't linked");
 
         this->setState(pin, nts::UNDEFINED);
         this->setState(pin, link->getOther()->compute(link->getOtherPin()));
