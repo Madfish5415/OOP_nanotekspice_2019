@@ -8,14 +8,16 @@
 #ifndef OOP_NANOTEKSPICE_2019_NOT_HPP
 #define OOP_NANOTEKSPICE_2019_NOT_HPP
 
-#include "../nts/ALogicGate.hpp"
+#include "nts/AComponent.hpp"
 
 namespace gate {
 
-class NOT : public nts::ALogicGate {
+class NOT : public nts::AComponent {
    public:
-    NOT() = default;
-    nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
+    NOT(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
+
+   public:
+    nts::Tristate compute(std::size_t pin) override;
 };
 
 }  // namespace gate

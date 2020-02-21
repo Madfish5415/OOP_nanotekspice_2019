@@ -8,14 +8,16 @@
 #ifndef OOP_NANOTEKSPICE_2019_XOR_HPP
 #define OOP_NANOTEKSPICE_2019_XOR_HPP
 
-#include "../nts/ALogicGate.hpp"
+#include "nts/AComponent.hpp"
 
 namespace gate {
 
-class XOR : public nts::ALogicGate {
+class XOR : public nts::AComponent {
    public:
-    XOR() = default;
-    nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
+    XOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
+
+   public:
+    nts::Tristate compute(std::size_t pin) override;
 };
 
 }  // namespace gate

@@ -8,50 +8,97 @@
 #include "AComponent.hpp"
 
 #include <algorithm>
+#include <iostream>
+#include <memory>
+#include <utility>
 
-nts::AComponent::AComponent(const nts::AComponent& component)
+#include "Error.hpp"
+
+nts::AComponent::AComponent(
+    std::string type, const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+    : _type(std::move(type))
 {
-    this->_value = component._value;
-    this->_links = component._links;
+    this->_INs = INs;
+    this->_OUTs = OUTs;
+
+    for (const auto& in : this->_INs) this->_pins[in] = nullptr;
 }
 
-nts::AComponent::AComponent(const std::string& value) : _value(value)
+void nts::AComponent::dump()
 {
+    std::cout << "Type: " << this->getType() << std::endl;
+    std::cout << "INs:";
+
+    for (const auto& in : this->_INs) std::cout << " " << in;
+    std::cout << std::endl;
+
+    std::cout << "OUTs:";
+
+    for (const auto& out : this->_OUTs) std::cout << " " << out;
+    std::cout << std::endl;
 }
 
-nts::AComponent& nts::AComponent::operator=(const nts::AComponent& component)
+void nts::AComponent::reset()
 {
-    if (this == &component)
-        return *this;
-
-    this->_value = component._value;
-    this->_links = component._links;
-
-    return *this;
+    this->_states.clear();
 }
 
-nts::Tristate nts::AComponent::compute(std::size_t pin)
+const std::string& nts::AComponent::getType() const
 {
-    if (!this->_links[pin].first) return nts::UNDEFINED;
+    return this->_type;
+}
 
-    return this->_links[pin].first->compute(this->_links[pin].second);
+const std::set<std::size_t>& nts::AComponent::getINs() const
+{
+    return this->_INs;
+}
+
+const std::set<std::size_t>& nts::AComponent::getOUTs() const
+{
+    return this->_OUTs;
+}
+
+nts::Link::pointer nts::AComponent::getLink(std::size_t pin) const
+{
+    if (this->_pins.count(pin) == 0)
+        throw Error(this->getType(), "Pin doesn't exist");
+
+    return this->_pins.at(pin);
 }
 
 void nts::AComponent::setLink(
-    std::size_t pin, nts::IComponent& other, std::size_t otherPin)
+    std::size_t pin, IComponent& other, size_t otherPin)
 {
-    if (this->_links.find(pin) != this->_links.end())
-        throw std::exception();  // TODO: Already linked
+    if (this->getLink(pin) != nullptr)
+        throw Error(this->getType(), "Pin already linked");
 
-    this->_links[pin] = {&other, otherPin};
+    this->_pins[pin] = std::make_shared<Link>(&other, otherPin);
 }
 
-void nts::AComponent::dump() const
+const std::string& nts::AComponent::getValue() const
 {
-    // TODO: Dump method
+    return this->_value;
 }
 
-nts::IComponent* nts::AComponent::clone()
+void nts::AComponent::setValue(const std::string& value)
 {
-    return new AComponent(*this);
+    this->_value = value;
+}
+
+void nts::AComponent::addPin(size_t pin)
+{
+    if (this->_pins.count(pin))
+        throw Error(this->getType(), "Pin already exist");
+
+    this->_pins[pin] = nullptr;
+}
+
+void nts::AComponent::setState(size_t pin, nts::Tristate state)
+{
+    this->_states[pin] = state;
+}
+
+const std::map<std::size_t, nts::Tristate>& nts::AComponent::getStates() const
+{
+    return this->_states;
 }
