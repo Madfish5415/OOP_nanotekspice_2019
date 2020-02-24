@@ -38,6 +38,7 @@ PROJ_SRC			=		gate/AND.cpp			\
                             nts/Error.cpp			\
                             nts/Factory.cpp			\
                             nts/Link.cpp			\
+                            parser/Error.cpp		\
                             parser/Parser.cpp		\
 
 CFLAGS				+=		-I $(INCL_DIR)

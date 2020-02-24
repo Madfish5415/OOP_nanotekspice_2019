@@ -10,9 +10,10 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <nts/Error.hpp>
-#include <nts/Factory.hpp>
 #include <sstream>
+
+#include "Error.hpp"
+#include "nts/Factory.hpp"
 
 static void comment(std::string& string)
 {
@@ -86,6 +87,7 @@ void parser::Parser::fill(const std::string& path)
 
     for (std::size_t i = 1; std::getline(file, line); ++i)
         this->_lines[i] = line;
+    this->_file = path;
 }
 
 void parser::Parser::clean()
@@ -104,87 +106,114 @@ void parser::Parser::clean()
 
 void parser::Parser::generate()
 {
+    this->checkLabels();
+    this->addComponents();
+    this->linkComponents();
+}
+
+void parser::Parser::checkLabels()
+{
     bool chipsetsLabel = false, linksLabel = false;
-    int state = 0;
 
     for (const auto& line : this->_lines) {
-        if (line.second == ".chipsets:") {
+        if (line.second == CHIPSETS_LABEL) {
             if (chipsetsLabel)
-                throw nts::Error("Parser", "Duplicate chipsets labels");
+                throw Error(
+                    this->_file, line.first, ERR_DUPLICATE_CHIPSETS_LABEL);
 
             chipsetsLabel = true;
         }
 
-        if (line.second == ".links:") {
-            if (!chipsetsLabel)
-                throw nts::Error("Parser", "Links label before chipset label");
+        if (line.second == LINKS_LABEL) {
             if (linksLabel)
-                throw nts::Error("Parser", "Duplicate links labels");
+                throw Error(this->_file, line.first, ERR_DUPLICATE_LINKS_LABEL);
+            if (!chipsetsLabel)
+                throw Error(this->_file, line.first, ERR_LINKS_BEFORE_CHIPSETS);
 
             linksLabel = true;
         }
     }
 
-    if (!chipsetsLabel) throw nts::Error("Parser", "No chipsets label");
-    if (!linksLabel) throw nts::Error("Parser", "No links label");
+    if (!chipsetsLabel) throw Error(this->_file, 0, ERR_NO_CHIPSETS_LABEL);
+    if (!linksLabel) throw Error(this->_file, 0, ERR_NO_LINKS_LABEL);
+}
+
+void parser::Parser::addComponents()
+{
+    bool section = false;
 
     for (const auto& line : this->_lines) {
-        if (line.second == ".chipsets:") {
-            state = 1;
-        } else if (line.second == ".links:") {
-            state = 2;
-        } else {
-            std::cout << line.second << std::endl;
-
-            std::vector<std::string> tokens = split(line.second, ' ');
-
-            if (tokens.size() != 2)
-                throw nts::Error(
-                    "Parser", "Invalid component declaration format");
-
-            if (state == 1) {
-                auto component = nts::Factory::Create(tokens[0]);
-
-                this->_circuit.addComponent(tokens[1], component);
-            } else if (state == 2) {
-                std::vector<std::string> link1 = split(tokens[0], ':');
-                std::vector<std::string> link2 = split(tokens[1], ':');
-
-                if (link1.size() != 2)
-                    throw nts::Error("Parser", "Invalid link format");
-                if (link2.size() != 2)
-                    throw nts::Error("Parser", "Invalid link format");
-
-                const auto& components = this->_circuit.getComponents();
-
-                if (components.count(link1[0]) == 0)
-                    throw nts::Error(
-                        "Parser", "Invalid link component (doesn't exists)");
-                if (components.count(link2[0]) == 0)
-                    throw nts::Error(
-                        "Parser", "Invalid link component (doesn't exists)");
-
-                if (!isNumber(link1[1]))
-                    throw nts::Error(
-                        "Parser", "Invalid link pin (not a number)");
-                if (!isNumber(link2[1]))
-                    throw nts::Error(
-                        "Parser", "Invalid link pin (not a number)");
-
-                int link1Pin = std::stoi(link1[1]);
-                int link2Pin = std::stoi(link2[1]);
-
-                if (components.at(link1[0])->getOUTs().count(link1Pin) == 0)
-                    throw nts::Error(
-                        "Parser", "Invalid link pin (not a OUT pin)");
-
-                if (components.at(link2[0])->getINs().count(link2Pin) == 0)
-                    throw nts::Error(
-                        "Parser", "Invalid link pin (not a IN pin)");
-
-                components.at(link2[0])->setLink(
-                    link2Pin, *components.at(link1[0]), link1Pin);
-            }
+        if (line.second == CHIPSETS_LABEL) {
+            section = true;
+            continue;
         }
+        if (!section) continue;
+        if (line.second == LINKS_LABEL) break;
+
+        std::vector<std::string> tokens = split(line.second, ' ');
+
+        if (tokens.size() != 2)
+            throw Error(
+                this->_file, line.first, ERR_COMPONENT_DECLARATION_FORMAT);
+
+        auto components = this->_circuit.getComponents();
+
+        if (components.count(tokens[1]))
+            throw Error(this->_file, line.first, ERR_COMPONENT_ALREADY_EXISTS);
+
+        auto component = nts::Factory::Create(tokens[0]);
+
+        this->_circuit.addComponent(tokens[1], component);
+    }
+}
+
+void parser::Parser::linkComponents()
+{
+    bool section = false;
+
+    for (const auto& line : this->_lines) {
+        if (line.second == LINKS_LABEL) {
+            section = true;
+            continue;
+        }
+
+        if (!section) continue;
+
+        std::vector<std::string> tokens = split(line.second, ' ');
+
+        if (tokens.size() != 2)
+            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+
+        std::vector<std::string> link1 = split(tokens[0], ':');
+        std::vector<std::string> link2 = split(tokens[1], ':');
+
+        if (link1.size() != 2)
+            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+        if (link2.size() != 2)
+            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+
+        const auto& components = this->_circuit.getComponents();
+
+        if (components.count(link1[0]) == 0)
+            throw Error(this->_file, line.first, ERR_COMPONENT_DOESNT_EXISTS);
+        if (components.count(link2[0]) == 0)
+            throw Error(this->_file, line.first, ERR_COMPONENT_DOESNT_EXISTS);
+
+        if (!isNumber(link1[1]))
+            throw Error(this->_file, line.first, ERR_PIN_NOT_A_NUMBER);
+        if (!isNumber(link2[1]))
+            throw Error(this->_file, line.first, ERR_PIN_NOT_A_NUMBER);
+
+        int link1Pin = std::stoi(link1[1]);
+        int link2Pin = std::stoi(link2[1]);
+
+        if (components.at(link1[0])->getOUTs().count(link1Pin) == 0)
+            throw Error(this->_file, line.first, ERR_PIN_NOT_AN_OUT);
+
+        if (components.at(link2[0])->getINs().count(link2Pin) == 0)
+            throw Error(this->_file, line.first, ERR_PIN_NOT_AN_IN);
+
+        components.at(link2[0])->setLink(
+            link2Pin, *components.at(link1[0]), link1Pin);
     }
 }
