@@ -38,9 +38,10 @@ PROJ_SRC			=		gate/AND.cpp			\
                             nts/Error.cpp			\
                             nts/Factory.cpp			\
                             nts/Link.cpp			\
+                            parser/Parser.cpp		\
 
 CFLAGS				+=		-I $(INCL_DIR)
-CFLAGS				+=		-W -Wall -Wextra -Werror
+CFLAGS				+=		-W -Wall -Wextra
 
 MAIN_OBJ			=		$(MAIN_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
