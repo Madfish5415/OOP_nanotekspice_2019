@@ -25,7 +25,6 @@
 #define ERR_PIN_NOT_AN_OUT ("Pin is not an OUT pin")
 
 #include "nts/Circuit.hpp"
-#include "Error.hpp"
 
 namespace parser {
 

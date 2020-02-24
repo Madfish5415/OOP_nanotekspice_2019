@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "Error.hpp"
 #include "nts/Factory.hpp"
@@ -156,7 +157,7 @@ void parser::Parser::addComponents()
             throw Error(
                 this->_file, line.first, ERR_COMPONENT_DECLARATION_FORMAT);
 
-        auto components = this->_circuit.getComponents();
+        const auto& components = this->_circuit.getComponents();
 
         if (components.count(tokens[1]))
             throw Error(this->_file, line.first, ERR_COMPONENT_ALREADY_EXISTS);

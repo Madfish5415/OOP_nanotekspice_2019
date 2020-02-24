@@ -9,7 +9,6 @@
 #define OOP_NANOTEKSPICE_2019_ACOMPONENT_HPP
 
 #include <map>
-#include <set>
 
 #include "IComponent.hpp"
 

@@ -7,7 +7,6 @@
 
 #include "Circuit.hpp"
 
-#include <algorithm>
 #include <iostream>
 
 #include "Error.hpp"
