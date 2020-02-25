@@ -7,13 +7,24 @@
 
 #include "Error.hpp"
 
-parser::Error::Error(
-    const std::string& file, std::size_t line, const std::string& message)
-    : nts::Error("Parser")
+parser::Error::Error(const std::string& error)
 {
-    this->_message += file;
+    this->_message = "Parser: " + error;
+}
 
-    if (line) this->_message += ":" + std::to_string(line);
+const char* parser::Error::what() const noexcept
+{
+    return this->_message.c_str();
+}
 
-    this->_message += ": " + message;
+parser::ErrorAtLine::ErrorAtLine(
+    const std::string& path, std::size_t line, const std::string& error)
+{
+    this->_message =
+        "Parser: " + path + ":" + std::to_string(line) + ": " + error;
+}
+
+const char* parser::ErrorAtLine::what() const noexcept
+{
+    return this->_message.c_str();
 }

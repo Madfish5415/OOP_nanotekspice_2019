@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME				=		a.out
+NAME				=		nanotekspice
 LIB_NAME			=		libmy.so
 LIB_ST_NAME			=		libmy.a
 TEST_NAME			=		tests/unit_tests
@@ -23,7 +23,9 @@ RM					=		rm -rf
 
 MAIN_SRC			=		main.cpp
 
-PROJ_SRC			=		chipset/C4001.cpp		\
+PROJ_SRC			=		cli/CLI.cpp				\
+							cli/Error.cpp			\
+							chipset/C4001.cpp		\
 							chipset/C4011.cpp		\
 							chipset/C4013.cpp		\
 							chipset/C4030.cpp		\
@@ -41,13 +43,14 @@ PROJ_SRC			=		chipset/C4001.cpp		\
 							io/Output.cpp			\
 							io/True.cpp				\
 							nts/AComponent.cpp		\
-                            nts/Circuit.cpp			\
-                            nts/Container.cpp		\
-                            nts/Error.cpp			\
-                            nts/Factory.cpp			\
-                            nts/Link.cpp			\
-                            parser/Error.cpp		\
-                            parser/Parser.cpp		\
+							nts/Circuit.cpp			\
+							nts/Container.cpp		\
+							nts/Error.cpp			\
+							nts/Factory.cpp			\
+							nts/Link.cpp			\
+							parser/Error.cpp		\
+							parser/Parser.cpp		\
+							util/string.cpp			\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror
