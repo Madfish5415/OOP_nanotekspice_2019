@@ -10,12 +10,12 @@
 
 chipset::C4069::C4069() : nts::Container("4069", {1, 3, 5, 9, 11, 13}, {2, 4, 6, 8, 10, 12})
 {
-    std::unique_ptr<nts::IComponent> not1 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<nts::IComponent> not2 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<nts::IComponent> not3 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<nts::IComponent> not4 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<nts::IComponent> not5 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<nts::IComponent> not6 = std::unique_ptr<nts::IComponent>(new gate::NOT({1}, {2}));
+    IComponent::pointer not1 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not2 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not3 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not4 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not5 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not6 = IComponent::pointer(new gate::NOT({1}, {2}));
 
     not1->setLink(1, *this, 1);
     this->setLink(2, *not1, 2);

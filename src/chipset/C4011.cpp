@@ -11,15 +11,15 @@
 
 chipset::C4011::C4011() : nts::Container("4011", {1, 2, 5, 6, 8, 9, 12, 13}, {3, 4, 10, 11})
 {
-    IComponent::pointer and1 = static_cast<std::unique_ptr<IComponent>>(new gate::AND({1, 2, 3}, {4}));
-    IComponent::pointer and2 = static_cast<std::unique_ptr<IComponent>>(new gate::AND({1, 2, 3}, {4}));
-    IComponent::pointer and3 = static_cast<std::unique_ptr<IComponent>>(new gate::AND({1, 2, 3}, {4}));
-    IComponent::pointer and4 = static_cast<std::unique_ptr<IComponent>>(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and1 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and2 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and3 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and4 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
 
-    IComponent::pointer not1 = static_cast<std::unique_ptr<IComponent>>(new gate::NOT({1}, {2}));
-    IComponent::pointer not2 = static_cast<std::unique_ptr<IComponent>>(new gate::NOT({1}, {2}));
-    IComponent::pointer not3 = static_cast<std::unique_ptr<IComponent>>(new gate::NOT({1}, {2}));
-    IComponent::pointer not4 = static_cast<std::unique_ptr<IComponent>>(new gate::NOT({1}, {2}));
+    IComponent::pointer not1 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not2 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not3 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not4 = IComponent::pointer(new gate::NOT({1}, {2}));
 
     not1->setLink(1, *and1, 4);
     not2->setLink(1, *and2, 4);

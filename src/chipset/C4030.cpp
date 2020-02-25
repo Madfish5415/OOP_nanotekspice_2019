@@ -11,10 +11,10 @@
 chipset::C4030::C4030()
     : nts::Container("4030", {1, 2, 5, 6, 8, 9, 12, 13}, {3, 4, 10, 11})
 {
-    std::unique_ptr<nts::IComponent> xor1 = std::unique_ptr<nts::IComponent>(new gate::XOR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> xor2 = std::unique_ptr<nts::IComponent>(new gate::XOR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> xor3 = std::unique_ptr<nts::IComponent>(new gate::XOR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> xor4 = std::unique_ptr<nts::IComponent>(new gate::XOR({1, 2}, {3}));
+    IComponent::pointer xor1 = IComponent::pointer(new gate::XOR({1, 2}, {3}));
+    IComponent::pointer xor2 = IComponent::pointer(new gate::XOR({1, 2}, {3}));
+    IComponent::pointer xor3 = IComponent::pointer(new gate::XOR({1, 2}, {3}));
+    IComponent::pointer xor4 = IComponent::pointer(new gate::XOR({1, 2}, {3}));
 
     xor1->setLink(1, *this, 1);
     xor1->setLink(2, *this, 2);

@@ -11,10 +11,10 @@
 chipset::C4081::C4081()
     : nts::Container("4081", {1, 2, 5, 6, 8, 9, 12, 13}, {3, 4, 10, 11})
 {
-    std::unique_ptr<nts::IComponent> and1 = std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> and2 = std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> and3 = std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> and4 = std::unique_ptr<nts::IComponent>(new gate::AND({1, 2}, {3}));
+    IComponent::pointer and1 = IComponent::pointer(new gate::AND({1, 2}, {3}));
+    IComponent::pointer and2 = IComponent::pointer(new gate::AND({1, 2}, {3}));
+    IComponent::pointer and3 = IComponent::pointer(new gate::AND({1, 2}, {3}));
+    IComponent::pointer and4 = IComponent::pointer(new gate::AND({1, 2}, {3}));
 
     and1->setLink(1, *this, 1);
     and1->setLink(2, *this, 2);

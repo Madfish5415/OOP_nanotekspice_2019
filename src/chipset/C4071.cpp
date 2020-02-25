@@ -11,10 +11,10 @@
 chipset::C4071::C4071()
     : nts::Container("4071", {1, 2, 5, 6, 8, 9, 12, 13}, {3, 4, 10, 11})
 {
-    std::unique_ptr<nts::IComponent> or1 = std::unique_ptr<nts::IComponent>(new gate::OR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> or2 = std::unique_ptr<nts::IComponent>(new gate::OR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> or3 = std::unique_ptr<nts::IComponent>(new gate::OR({1, 2}, {3}));
-    std::unique_ptr<nts::IComponent> or4 = std::unique_ptr<nts::IComponent>(new gate::OR({1, 2}, {3}));
+    IComponent::pointer or1 = IComponent::pointer(new gate::OR({1, 2}, {3}));
+    IComponent::pointer or2 = IComponent::pointer(new gate::OR({1, 2}, {3}));
+    IComponent::pointer or3 = IComponent::pointer(new gate::OR({1, 2}, {3}));
+    IComponent::pointer or4 = IComponent::pointer(new gate::OR({1, 2}, {3}));
 
     or1->setLink(1, *this, 1);
     or1->setLink(2, *this, 2);
