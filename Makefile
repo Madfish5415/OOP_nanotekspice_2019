@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME				=		a.out
+NAME				=		nanotekspice
 LIB_NAME			=		libmy.so
 LIB_ST_NAME			=		libmy.a
 TEST_NAME			=		tests/unit_tests
@@ -23,20 +23,34 @@ RM					=		rm -rf
 
 MAIN_SRC			=		main.cpp
 
-PROJ_SRC			=		chipset/C4071.cpp				\
-							chipset/C4081.cpp				\
-							gate/AND.cpp					\
-							gate/OR.cpp						\
-							nts/AChipset.cpp				\
-							nts/AComponent.cpp				\
-							nts/ALogicGate.cpp				\
-							nts/Circuit.cpp					\
-							nts/SpecialComponent.cpp		\
-							special/Clock.cpp				\
-							special/False.cpp				\
-							special/Input.cpp				\
-							special/Output.cpp				\
-							special/True.cpp				\
+PROJ_SRC			=		cli/CLI.cpp				\
+							cli/Error.cpp			\
+							chipset/C4001.cpp		\
+							chipset/C4011.cpp		\
+							chipset/C4013.cpp		\
+							chipset/C4030.cpp		\
+							chipset/C4069.cpp		\
+							chipset/C4071.cpp		\
+							chipset/C4081.cpp		\
+							component/DFlipFlop.cpp	\
+							gate/AND.cpp			\
+							gate/NOT.cpp			\
+							gate/OR.cpp				\
+							gate/XOR.cpp			\
+							io/Clock.cpp			\
+							io/False.cpp			\
+							io/Input.cpp			\
+							io/Output.cpp			\
+							io/True.cpp				\
+							nts/AComponent.cpp		\
+							nts/Circuit.cpp			\
+							nts/Container.cpp		\
+							nts/Error.cpp			\
+							nts/Factory.cpp			\
+							nts/Link.cpp			\
+							parser/Error.cpp		\
+							parser/Parser.cpp		\
+							util/string.cpp			\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror

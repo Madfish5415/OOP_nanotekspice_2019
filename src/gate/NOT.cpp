@@ -2,27 +2,27 @@
 ** EPITECH PROJECT, 2020
 ** OOP_nanotekspice_2019
 ** File description:
-** OR.cpp
+** NOT.cpp
 */
 
-#include "OR.hpp"
+#include "NOT.hpp"
 
 #include "nts/Error.hpp"
 
-static nts::Tristate operate(const nts::Tristate t1, const nts::Tristate t2)
+static nts::Tristate operate(const nts::Tristate t)
 {
-    if ((t1 == nts::TRUE) || (t2 == nts::TRUE)) return nts::TRUE;
-    if ((t1 == nts::FALSE) && (t2 == nts::FALSE)) return nts::FALSE;
+    if (t == nts::TRUE) return nts::FALSE;
+    if (t == nts::FALSE) return nts::TRUE;
 
     return nts::UNDEFINED;
 }
 
-gate::OR::OR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
-    : AComponent("OR", INs, OUTs)
+gate::NOT::NOT(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+    : AComponent("NOT", INs, OUTs)
 {
 }
 
-nts::Tristate gate::OR::compute(std::size_t pin)
+nts::Tristate gate::NOT::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
         throw nts::Error(this->getType(), "Pin doesn't exist");
@@ -45,10 +45,7 @@ nts::Tristate gate::OR::compute(std::size_t pin)
 
         const nts::Tristate value = states.at(*it);
 
-        if (i == 0)
-            result = value;
-        else
-            result = operate(result, value);
+        result = operate(value);
     }
 
     return result;

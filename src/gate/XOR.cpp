@@ -2,27 +2,31 @@
 ** EPITECH PROJECT, 2020
 ** OOP_nanotekspice_2019
 ** File description:
-** OR.cpp
+** XOR.cpp
 */
 
-#include "OR.hpp"
+#include "XOR.hpp"
 
 #include "nts/Error.hpp"
 
 static nts::Tristate operate(const nts::Tristate t1, const nts::Tristate t2)
 {
-    if ((t1 == nts::TRUE) || (t2 == nts::TRUE)) return nts::TRUE;
-    if ((t1 == nts::FALSE) && (t2 == nts::FALSE)) return nts::FALSE;
+    if (((t1 == nts::TRUE) && (t2 == nts::FALSE)) ||
+        ((t1 == nts::FALSE) && (t2 == nts::TRUE)))
+        return nts::TRUE;
+    if (((t1 == nts::TRUE) && (t2 == nts::TRUE)) ||
+        ((t1 == nts::FALSE) && (t2 == nts::FALSE)))
+        return nts::FALSE;
 
     return nts::UNDEFINED;
 }
 
-gate::OR::OR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
-    : AComponent("OR", INs, OUTs)
+gate::XOR::XOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+    : AComponent("XOR", INs, OUTs)
 {
 }
 
-nts::Tristate gate::OR::compute(std::size_t pin)
+nts::Tristate gate::XOR::compute(std::size_t pin)
 {
     if (this->getOUTs().count(pin) == 0)
         throw nts::Error(this->getType(), "Pin doesn't exist");

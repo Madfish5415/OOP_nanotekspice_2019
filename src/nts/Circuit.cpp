@@ -9,60 +9,10 @@
 
 #include <iostream>
 
-#include "../special/Output.hpp"
+#include "Error.hpp"
 
-nts::Circuit::Circuit(const nts::Circuit& circuit) : Circuit()
+nts::Circuit::Circuit() : Container("Circuit", {}, {})
 {
-    this->_value = circuit._value;
-    this->_links = circuit._links;
-
-    for (const auto& component : circuit._components)
-        this->_components[component.first] = component.second->clone();
-}
-
-nts::Circuit::~Circuit()
-{
-    for (const auto& component : _components) delete component.second;
-}
-
-nts::Circuit& nts::Circuit::operator=(const nts::Circuit& circuit)
-{
-    if (this == &circuit) return *this;
-
-    this->_value = circuit._value;
-    this->_links = circuit._links;
-
-    for (const auto& component : circuit._components)
-        this->_components[component.first] = component.second->clone();
-
-    return *this;
-}
-
-nts::IComponent* nts::Circuit::clone()
-{
-    return new Circuit(*this);
-}
-
-void nts::Circuit::addComponent(
-    const std::string& name, nts::IComponent& component)
-{
-    if (this->_components.find(name) != this->_components.end())
-        throw std::exception();  // TODO: Several components share the same name
-
-    this->_components[name] = &component;
-}
-
-void nts::Circuit::removeComponent(const std::string& name)
-{
-    this->_components.erase(name);
-}
-
-nts::IComponent& nts::Circuit::getComponent(const std::string& name)
-{
-    if (this->_components.find(name) == this->_components.end())
-        throw std::exception();  // TODO: A component name is unknown
-
-    return *this->_components[name];
 }
 
 void nts::Circuit::display()
@@ -74,11 +24,11 @@ void nts::Circuit::display()
             case UNDEFINED:
                 std::cout << "U";
                 break;
-            case TRUE:
-                std::cout << "1";
-                break;
             case FALSE:
                 std::cout << "0";
+                break;
+            case TRUE:
+                std::cout << "1";
                 break;
         }
 
@@ -86,9 +36,37 @@ void nts::Circuit::display()
     }
 }
 
+void nts::Circuit::input(const std::string& name, const std::string& value)
+{
+    const auto& components = this->getComponents();
+
+    if (components.count(name) == 0)
+        throw Error(this->getType(), "Component doesn't exist");
+    if ((components.at(name)->getType() != "Input") ||
+        (components.at(name)->getType() != "Clock"))
+        throw Error(this->getType(), "Component isn't an Input");
+
+    components.at(name)->setValue(value);
+}
+
 void nts::Circuit::simulate()
 {
-    for (const auto& component : _components)
-        if (dynamic_cast<special::Output*>(component.second))
+    const auto& components = this->getComponents();
+
+    for (const auto& component : components)
+        if (component.second->getType() == "Output")
             this->_results[component.first] = component.second->compute(1);
+
+    for (const auto& component : components) {
+        if (component.second->getType() == "Clock") {
+            std::string value = component.second->getValue();
+
+            if (value == "0")
+                value = "1";
+            else if (value == "1")
+                value = "0";
+
+            component.second->setValue(value);
+        }
+    }
 }

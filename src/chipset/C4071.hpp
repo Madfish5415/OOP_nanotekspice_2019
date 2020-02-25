@@ -8,11 +8,11 @@
 #ifndef OOP_NANOTEKSPICE_2019_C4071_HPP
 #define OOP_NANOTEKSPICE_2019_C4071_HPP
 
-#include "../nts/AChipset.hpp"
+#include "../nts/Container.hpp"
 
 namespace chipset {
 
-class C4071 : public nts::AChipset {
+class C4071 : public nts::Container {
    public:
     C4071();
 };
