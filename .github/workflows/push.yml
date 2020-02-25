@@ -15,7 +15,7 @@ jobs:
     container: cyberryteam/epitech-docker:fedora
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
 
     - name: Build
       run: make
@@ -39,7 +39,7 @@ jobs:
     container: cyberryteam/epitech-docker:ubuntu
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
 
     - name: Build
       run: make
