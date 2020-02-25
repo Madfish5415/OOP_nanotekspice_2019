@@ -22,8 +22,9 @@
 #define ERR_COMPONENT_LINK_FORMAT ("Invalid component link format")
 #define ERR_COMPONENT_DOESNT_EXIST ("Component doesn't exist")
 #define ERR_PIN_NOT_A_NUMBER ("Pin is not a number")
-#define ERR_PIN_NOT_AN_IN ("Pin is not an IN pin")
-#define ERR_PIN_NOT_AN_OUT ("Pin is not an OUT pin")
+#define ERR_PIN_DOESNT_EXIST ("Pin doesn't exist")
+#define ERR_PIN_CANT_LINK_IN ("IN pin can't be linked to another IN pin")
+#define ERR_PIN_CANT_LINK_OUT ("OUT pin can't be linked to another OUT pin")
 
 namespace parser {
 

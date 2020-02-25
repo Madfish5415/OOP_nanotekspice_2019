@@ -192,13 +192,31 @@ void parser::Parser::linkComponents()
         int link1Pin = std::stoi(link1[1]);
         int link2Pin = std::stoi(link2[1]);
 
-        if (components.at(link1[0])->getOUTs().count(link1Pin) == 0)
-            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_AN_OUT);
+        std::pair<std::string, int> src, dest;
 
-        if (components.at(link2[0])->getINs().count(link2Pin) == 0)
-            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_AN_IN);
+        if (components.at(link1[0])->getINs().count(link1Pin))
+            src = {link1[0], link1Pin};
+        else if (components.at(link1[0])->getOUTs().count(link1Pin))
+            dest = {link1[0], link1Pin};
+        else
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_DOESNT_EXIST);
 
-        components.at(link2[0])->setLink(
-            link2Pin, *components.at(link1[0]), link1Pin);
+        if (components.at(link2[0])->getINs().count(link2Pin)) {
+            if (!src.first.empty())
+                throw ErrorAtLine(
+                    this->_path, line.first, ERR_PIN_CANT_LINK_IN);
+
+            src = {link2[0], link2Pin};
+        } else if (components.at(link2[0])->getOUTs().count(link2Pin)) {
+            if (!dest.first.empty())
+                throw ErrorAtLine(
+                    this->_path, line.first, ERR_PIN_CANT_LINK_OUT);
+
+            dest = {link2[0], link2Pin};
+        } else
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_DOESNT_EXIST);
+
+        components.at(src.first)->setLink(
+            src.second, *components.at(dest.first), dest.second);
     }
 }

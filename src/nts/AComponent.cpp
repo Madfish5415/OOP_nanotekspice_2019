@@ -25,7 +25,10 @@ nts::AComponent::AComponent(
 
 void nts::AComponent::dump()
 {
-    std::cout << "Type: " << this->getType() << std::endl;
+    std::cout << "Type: " << this->_type << std::endl;
+
+    if (!this->_value.empty())
+        std::cout << "Value: " << this->_value << std::endl;
 
     if (!this->_INs.empty()) {
         std::cout << "INs:";

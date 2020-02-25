@@ -12,10 +12,10 @@
 #include <string>
 
 #define ERR_INPUT ("Invalid input")
-#define ERR_INPUT_EOF ("End of file input")
 #define ERR_INPUT_FORMAT ("Invalid input format")
-#define ERR_INPUT_DOESNT_EXIST ("Input doesn't exist")
-#define ERR_INPUT_NOT_INITIALIZED ("Input not initialized")
+#define ERR_INPUT_DOESNT_EXIST ("Clock/Input doesn't exist")
+#define ERR_INPUT_VALUE ("Invalid input value")
+#define ERR_INPUT_NOT_INITIALIZED ("Clock/Input not initialized")
 #define ERR_UNKNOWN_COMMAND ("Unknown command")
 
 namespace cli {
