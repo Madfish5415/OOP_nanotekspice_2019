@@ -15,12 +15,12 @@
 
 namespace nts {
 
-typedef std::function<std::unique_ptr<IComponent>(const std::string&)>
+typedef std::function<IComponent::pointer(const std::string&)>
     Constructor;
 
 class Factory {
    public:
-    static std::unique_ptr<IComponent> Create(
+    static IComponent::pointer Create(
         const std::string& type, const std::string& value = "");
     static void Register(
         const std::string& type, const Constructor& constructor);

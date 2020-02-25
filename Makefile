@@ -23,7 +23,15 @@ RM					=		rm -rf
 
 MAIN_SRC			=		main.cpp
 
-PROJ_SRC			=		gate/AND.cpp			\
+PROJ_SRC			=		chipset/C4001.cpp		\
+							chipset/C4011.cpp		\
+							chipset/C4013.cpp		\
+							chipset/C4030.cpp		\
+							chipset/C4069.cpp		\
+							chipset/C4071.cpp		\
+							chipset/C4081.cpp		\
+							component/DFlipFlop.cpp	\
+							gate/AND.cpp			\
 							gate/NOT.cpp			\
 							gate/OR.cpp				\
 							gate/XOR.cpp			\
