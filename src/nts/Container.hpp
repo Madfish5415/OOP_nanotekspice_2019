@@ -8,8 +8,6 @@
 #ifndef OOP_NANOTEKSPICE_2019_CONTAINER_HPP
 #define OOP_NANOTEKSPICE_2019_CONTAINER_HPP
 
-#include <memory>
-
 #include "AComponent.hpp"
 
 namespace nts {
@@ -29,12 +27,10 @@ class Container : public AComponent {
 
    public:
     void addComponent(const std::string &name, IComponent::pointer &component);
-
-   protected:
-    Components _components;
-
-   public:
     const Components &getComponents() const;
+
+   private:
+    Components _components;
 };
 
 }  // namespace nts

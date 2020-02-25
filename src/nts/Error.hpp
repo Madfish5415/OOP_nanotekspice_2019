@@ -14,10 +14,10 @@ namespace nts {
 
 class Error : public std::exception {
    public:
-    Error(const std::string& component, const std::string& error);
-    const char *what() const noexcept override;
+    explicit Error(const std::string& component, const std::string& error = "");
+    const char* what() const noexcept override;
 
-   private:
+   protected:
     std::string _message;
 };
 

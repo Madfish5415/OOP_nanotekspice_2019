@@ -10,7 +10,6 @@
 
 #include <functional>
 #include <map>
-#include <memory>
 
 #include "IComponent.hpp"
 
