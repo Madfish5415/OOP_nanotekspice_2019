@@ -11,21 +11,21 @@
 
 component::DFlipFlop::DFlipFlop() : nts::Container("DFlipFlop", {1, 2, 3, 4}, {5, 6})
 {
-    std::unique_ptr<IComponent> not1 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not2 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not3 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not4 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not5 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not6 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not7 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
-    std::unique_ptr<IComponent> not8 = std::unique_ptr<IComponent>(new gate::NOT({1}, {2}));
+    IComponent::pointer not1 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not2 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not3 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not4 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not5 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not6 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not7 = IComponent::pointer(new gate::NOT({1}, {2}));
+    IComponent::pointer not8 = IComponent::pointer(new gate::NOT({1}, {2}));
 
-    std::unique_ptr<IComponent> and1 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
-    std::unique_ptr<IComponent> and2 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
-    std::unique_ptr<IComponent> and3 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
-    std::unique_ptr<IComponent> and4 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
-    std::unique_ptr<IComponent> and5 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
-    std::unique_ptr<IComponent> and6 = std::unique_ptr<IComponent>(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and1 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and2 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and3 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and4 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and5 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
+    IComponent::pointer and6 = IComponent::pointer(new gate::AND({1, 2, 3}, {4}));
 
     not1->setLink(1, *and1, 4);
     not2->setLink(1, *and2, 4);
