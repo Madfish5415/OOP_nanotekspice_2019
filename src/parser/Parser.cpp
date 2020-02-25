@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 #include "Error.hpp"
@@ -46,26 +47,31 @@ static bool isNumber(const std::string& string)
     return true;
 }
 
-nts::Circuit& parser::Parser::parse(const std::string& path)
+parser::Parser::Parser(std::string path) : _path(std::move(path))
 {
-    this->fill(path);
+    this->fill();
     this->clean();
-    this->generate();
+}
+
+nts::Circuit& parser::Parser::parse()
+{
+    this->checkLabels();
+    this->addComponents();
+    this->linkComponents();
 
     return this->_circuit;
 }
 
-void parser::Parser::fill(const std::string& path)
+void parser::Parser::fill()
 {
-    std::ifstream file(path);
+    std::ifstream file(this->_path);
 
-    if (file.fail()) throw Error(this->_file, 0, ERR_FILE_FAILED);
+    if (file.fail()) throw Error(ERR_FILE_FAILED);
 
     std::string line;
 
     for (std::size_t i = 1; std::getline(file, line); ++i)
         this->_lines[i] = line;
-    this->_file = path;
 }
 
 void parser::Parser::clean()
@@ -82,13 +88,6 @@ void parser::Parser::clean()
     }
 }
 
-void parser::Parser::generate()
-{
-    this->checkLabels();
-    this->addComponents();
-    this->linkComponents();
-}
-
 void parser::Parser::checkLabels()
 {
     bool chipsetsLabel = false, linksLabel = false;
@@ -96,24 +95,26 @@ void parser::Parser::checkLabels()
     for (const auto& line : this->_lines) {
         if (line.second == CHIPSETS_LABEL) {
             if (chipsetsLabel)
-                throw Error(
-                    this->_file, line.first, ERR_DUPLICATE_CHIPSETS_LABEL);
+                throw ErrorAtLine(
+                    this->_path, line.first, ERR_DUPLICATE_CHIPSETS_LABEL);
 
             chipsetsLabel = true;
         }
 
         if (line.second == LINKS_LABEL) {
             if (linksLabel)
-                throw Error(this->_file, line.first, ERR_DUPLICATE_LINKS_LABEL);
+                throw ErrorAtLine(
+                    this->_path, line.first, ERR_DUPLICATE_LINKS_LABEL);
             if (!chipsetsLabel)
-                throw Error(this->_file, line.first, ERR_LINKS_BEFORE_CHIPSETS);
+                throw ErrorAtLine(
+                    this->_path, line.first, ERR_LINKS_BEFORE_CHIPSETS);
 
             linksLabel = true;
         }
     }
 
-    if (!chipsetsLabel) throw Error(this->_file, 0, ERR_NO_CHIPSETS_LABEL);
-    if (!linksLabel) throw Error(this->_file, 0, ERR_NO_LINKS_LABEL);
+    if (!chipsetsLabel) throw Error(ERR_NO_CHIPSETS_LABEL);
+    if (!linksLabel) throw Error(ERR_NO_LINKS_LABEL);
 }
 
 void parser::Parser::addComponents()
@@ -131,13 +132,14 @@ void parser::Parser::addComponents()
         std::vector<std::string> tokens = util::string::split(line.second, ' ');
 
         if (tokens.size() != 2)
-            throw Error(
-                this->_file, line.first, ERR_COMPONENT_DECLARATION_FORMAT);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_DECLARATION_FORMAT);
 
         const auto& components = this->_circuit.getComponents();
 
         if (components.count(tokens[1]))
-            throw Error(this->_file, line.first, ERR_COMPONENT_ALREADY_EXISTS);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_ALREADY_EXISTS);
 
         auto component = nts::Factory::Create(tokens[0]);
 
@@ -160,36 +162,41 @@ void parser::Parser::linkComponents()
         std::vector<std::string> tokens = util::string::split(line.second, ' ');
 
         if (tokens.size() != 2)
-            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_LINK_FORMAT);
 
         std::vector<std::string> link1 = util::string::split(tokens[0], ':');
         std::vector<std::string> link2 = util::string::split(tokens[1], ':');
 
         if (link1.size() != 2)
-            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_LINK_FORMAT);
         if (link2.size() != 2)
-            throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_LINK_FORMAT);
 
         const auto& components = this->_circuit.getComponents();
 
         if (components.count(link1[0]) == 0)
-            throw Error(this->_file, line.first, ERR_COMPONENT_DOESNT_EXISTS);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_DOESNT_EXIST);
         if (components.count(link2[0]) == 0)
-            throw Error(this->_file, line.first, ERR_COMPONENT_DOESNT_EXISTS);
+            throw ErrorAtLine(
+                this->_path, line.first, ERR_COMPONENT_DOESNT_EXIST);
 
         if (!isNumber(link1[1]))
-            throw Error(this->_file, line.first, ERR_PIN_NOT_A_NUMBER);
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_A_NUMBER);
         if (!isNumber(link2[1]))
-            throw Error(this->_file, line.first, ERR_PIN_NOT_A_NUMBER);
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_A_NUMBER);
 
         int link1Pin = std::stoi(link1[1]);
         int link2Pin = std::stoi(link2[1]);
 
         if (components.at(link1[0])->getOUTs().count(link1Pin) == 0)
-            throw Error(this->_file, line.first, ERR_PIN_NOT_AN_OUT);
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_AN_OUT);
 
         if (components.at(link2[0])->getINs().count(link2Pin) == 0)
-            throw Error(this->_file, line.first, ERR_PIN_NOT_AN_IN);
+            throw ErrorAtLine(this->_path, line.first, ERR_PIN_NOT_AN_IN);
 
         components.at(link2[0])->setLink(
             link2Pin, *components.at(link1[0]), link1Pin);

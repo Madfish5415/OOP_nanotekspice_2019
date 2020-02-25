@@ -23,7 +23,9 @@ RM					=		rm -rf
 
 MAIN_SRC			=		main.cpp
 
-PROJ_SRC			=		gate/AND.cpp			\
+PROJ_SRC			=		cli/CLI.cpp				\
+							cli/Error.cpp			\
+							gate/AND.cpp			\
 							gate/NOT.cpp			\
 							gate/OR.cpp				\
 							gate/XOR.cpp			\
