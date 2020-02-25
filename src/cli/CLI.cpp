@@ -93,14 +93,17 @@ void cli::CLI::init()
         if (tokens.size() != 2) throw Error(ERR_INPUT_FORMAT);
 
         if ((components.count(tokens[0]) == 0) ||
-            (components.at(tokens[0])->getType() != "Input"))
+            ((components.at(tokens[0])->getType() != "Input") ||
+                (components.at(tokens[0])->getType() != "Clock")))
             throw Error(ERR_INPUT_DOESNT_EXIST);
 
         components.at(tokens[0])->setValue(tokens[1]);
     }
 
     for (const auto& component : components) {
-        if (component.second->getType() != "Input") continue;
+        if ((component.second->getType() != "Input") ||
+            (component.second->getType() != "Clock"))
+            continue;
         if (component.second->getValue() == "U")
             throw Error(ERR_INPUT_NOT_INITIALIZED);
     }
@@ -125,7 +128,8 @@ void cli::CLI::input(const std::string& command)
     if (tokens.size() != 2) throw ErrorRuntime(INPUT_COMMAND, ERR_INPUT_FORMAT);
 
     if ((components.count(tokens[0]) == 0) ||
-        (components.at(tokens[0])->getType() != "Input"))
+        ((components.at(tokens[0])->getType() != "Input") ||
+            (components.at(tokens[0])->getType() != "Clock")))
         throw ErrorRuntime(INPUT_COMMAND, ERR_INPUT_DOESNT_EXIST);
 
     components.at(tokens[0])->setValue(tokens[1]);

@@ -9,14 +9,60 @@
 #include <iostream>
 #include <vector>
 
+#include "chipset/C4001.hpp"
+#include "chipset/C4011.hpp"
+#include "chipset/C4013.hpp"
+#include "chipset/C4030.hpp"
+#include "chipset/C4069.hpp"
+#include "chipset/C4071.hpp"
+#include "chipset/C4081.hpp"
 #include "cli/CLI.hpp"
+#include "io/Clock.hpp"
+#include "io/False.hpp"
 #include "io/Input.hpp"
 #include "io/Output.hpp"
+#include "io/True.hpp"
 #include "nts/Factory.hpp"
 #include "util/def.hpp"
 
 static void registerAll()
 {
+    nts::Factory::Register(
+        "4001", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4001());
+        });
+    nts::Factory::Register(
+        "4011", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4011());
+        });
+    nts::Factory::Register(
+        "4013", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4013());
+        });
+    nts::Factory::Register(
+        "4030", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4030());
+        });
+    nts::Factory::Register(
+        "4069", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4069());
+        });
+    nts::Factory::Register(
+        "4071", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4071());
+        });
+    nts::Factory::Register(
+        "4081", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new chipset::C4081());
+        });
+    nts::Factory::Register(
+        "clock", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new io::Clock());
+        });
+    nts::Factory::Register(
+        "false", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new io::False());
+        });
     nts::Factory::Register(
         "input", [](auto) -> std::unique_ptr<nts::IComponent> {
             return std::unique_ptr<nts::IComponent>(new io::Input());
@@ -24,6 +70,10 @@ static void registerAll()
     nts::Factory::Register(
         "output", [](auto) -> std::unique_ptr<nts::IComponent> {
             return std::unique_ptr<nts::IComponent>(new io::Output());
+        });
+    nts::Factory::Register(
+        "true", [](auto) -> std::unique_ptr<nts::IComponent> {
+            return std::unique_ptr<nts::IComponent>(new io::True());
         });
 }
 
