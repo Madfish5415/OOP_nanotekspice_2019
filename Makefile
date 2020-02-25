@@ -42,7 +42,7 @@ PROJ_SRC			=		gate/AND.cpp			\
                             parser/Parser.cpp		\
 
 CFLAGS				+=		-I $(INCL_DIR)
-CFLAGS				+=		-W -Wall -Wextra
+CFLAGS				+=		-W -Wall -Wextra -Werror
 
 MAIN_OBJ			=		$(MAIN_SRC:%.cpp=$(OBJ_DIR)/%.o)
 
