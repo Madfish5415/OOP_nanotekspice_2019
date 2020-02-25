@@ -10,11 +10,11 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <vector>
 
 #include "Error.hpp"
 #include "nts/Factory.hpp"
+#include "util/string.hpp"
 
 static void comment(std::string& string)
 {
@@ -38,32 +38,6 @@ static void spaces(std::string& string)
         string.begin(), string.end(), [](char c) { return isspace(c); }, ' ');
 }
 
-static void trim(std::string& string)
-{
-    if (string.empty()) return;
-
-    std::string::iterator left = std::find_if(
-        string.begin(), string.end(), [](char c) { return !isspace(c); });
-
-    string.erase(string.begin(), left);
-
-    std::string::reverse_iterator right = std::find_if(
-        string.rbegin(), string.rend(), [](char c) { return !isspace(c); });
-
-    string.erase(right.base(), string.end());
-}
-
-static std::vector<std::string> split(const std::string& string, char delim)
-{
-    std::istringstream stream(string);
-    std::vector<std::string> tokens;
-    std::string token;
-
-    while (std::getline(stream, token, delim)) tokens.push_back(token);
-
-    return tokens;
-}
-
 static bool isNumber(const std::string& string)
 {
     for (const auto& c : string)
@@ -84,6 +58,9 @@ nts::Circuit& parser::Parser::parse(const std::string& path)
 void parser::Parser::fill(const std::string& path)
 {
     std::ifstream file(path);
+
+    if (file.fail()) throw Error(this->_file, 0, ERR_FILE_FAILED);
+
     std::string line;
 
     for (std::size_t i = 1; std::getline(file, line); ++i)
@@ -96,7 +73,7 @@ void parser::Parser::clean()
     for (auto it = this->_lines.begin(); it != this->_lines.end();) {
         comment(it->second);
         spaces(it->second);
-        trim(it->second);
+        util::string::trim(it->second);
 
         if (it->second.empty())
             it = this->_lines.erase(it);
@@ -151,7 +128,7 @@ void parser::Parser::addComponents()
         if (!section) continue;
         if (line.second == LINKS_LABEL) break;
 
-        std::vector<std::string> tokens = split(line.second, ' ');
+        std::vector<std::string> tokens = util::string::split(line.second, ' ');
 
         if (tokens.size() != 2)
             throw Error(
@@ -180,13 +157,13 @@ void parser::Parser::linkComponents()
 
         if (!section) continue;
 
-        std::vector<std::string> tokens = split(line.second, ' ');
+        std::vector<std::string> tokens = util::string::split(line.second, ' ');
 
         if (tokens.size() != 2)
             throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);
 
-        std::vector<std::string> link1 = split(tokens[0], ':');
-        std::vector<std::string> link2 = split(tokens[1], ':');
+        std::vector<std::string> link1 = util::string::split(tokens[0], ':');
+        std::vector<std::string> link2 = util::string::split(tokens[1], ':');
 
         if (link1.size() != 2)
             throw Error(this->_file, line.first, ERR_COMPONENT_LINK_FORMAT);

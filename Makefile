@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME				=		a.out
+NAME				=		nanotekspice
 LIB_NAME			=		libmy.so
 LIB_ST_NAME			=		libmy.a
 TEST_NAME			=		tests/unit_tests
@@ -40,6 +40,7 @@ PROJ_SRC			=		gate/AND.cpp			\
                             nts/Link.cpp			\
                             parser/Error.cpp		\
                             parser/Parser.cpp		\
+                            util/string.cpp			\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror

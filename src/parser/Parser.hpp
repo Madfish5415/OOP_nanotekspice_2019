@@ -11,6 +11,7 @@
 #define CHIPSETS_LABEL (".chipsets:")
 #define LINKS_LABEL (".links:")
 
+#define ERR_FILE_FAILED ("File open failed")
 #define ERR_DUPLICATE_CHIPSETS_LABEL ("Duplicate chipsets label")
 #define ERR_DUPLICATE_LINKS_LABEL ("Duplicate links label")
 #define ERR_LINKS_BEFORE_CHIPSETS ("Links label before chipsets label")
