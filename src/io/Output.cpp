@@ -7,7 +7,7 @@
 
 #include "Output.hpp"
 
-#include <nts/Error.hpp>
+#include "nts/Error.hpp"
 
 io::Output::Output() : AComponent("Output", {1}, {})
 {

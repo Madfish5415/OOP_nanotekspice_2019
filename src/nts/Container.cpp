@@ -7,6 +7,8 @@
 
 #include "Container.hpp"
 
+#include <iostream>
+
 #include "Error.hpp"
 
 nts::Container::Container(const std::string& type, const std::set<size_t>& INs,
@@ -37,7 +39,10 @@ void nts::Container::dump()
 {
     AComponent::dump();
 
-    for (const auto& component : _components) component.second->dump();
+    if (!this->_components.empty()) {
+        std::cout << "Components:" << std::endl;
+        for (const auto& component : _components) component.second->dump();
+    }
 }
 
 void nts::Container::reset()

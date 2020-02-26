@@ -7,7 +7,6 @@
 
 #include "Circuit.hpp"
 
-#include <algorithm>
 #include <iostream>
 
 #include "Error.hpp"
@@ -43,7 +42,8 @@ void nts::Circuit::input(const std::string& name, const std::string& value)
 
     if (components.count(name) == 0)
         throw Error(this->getType(), "Component doesn't exist");
-    if (components.at(name)->getType() != "Input")
+    if ((components.at(name)->getType() != "Input") ||
+        (components.at(name)->getType() != "Clock"))
         throw Error(this->getType(), "Component isn't an Input");
 
     components.at(name)->setValue(value);

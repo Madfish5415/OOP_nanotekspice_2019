@@ -7,7 +7,7 @@
 
 #include "AND.hpp"
 
-#include <nts/Error.hpp>
+#include "nts/Error.hpp"
 
 static nts::Tristate operate(const nts::Tristate t1, const nts::Tristate t2)
 {

@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <iostream>
-#include <memory>
 #include <utility>
 
 #include "Error.hpp"
@@ -26,16 +25,22 @@ nts::AComponent::AComponent(
 
 void nts::AComponent::dump()
 {
-    std::cout << "Type: " << this->getType() << std::endl;
-    std::cout << "INs:";
+    std::cout << "Type: " << this->_type << std::endl;
 
-    for (const auto& in : this->_INs) std::cout << " " << in;
-    std::cout << std::endl;
+    if (!this->_value.empty())
+        std::cout << "Value: " << this->_value << std::endl;
 
-    std::cout << "OUTs:";
+    if (!this->_INs.empty()) {
+        std::cout << "INs:";
+        for (const auto& in : this->_INs) std::cout << " " << in;
+        std::cout << std::endl;
+    }
 
-    for (const auto& out : this->_OUTs) std::cout << " " << out;
-    std::cout << std::endl;
+    if (!this->_OUTs.empty()) {
+        std::cout << "OUTs:";
+        for (const auto& out : this->_OUTs) std::cout << " " << out;
+        std::cout << std::endl;
+    }
 }
 
 void nts::AComponent::reset()

@@ -9,7 +9,7 @@
 
 #include "Error.hpp"
 
-std::unique_ptr<nts::IComponent> nts::Factory::Create(
+nts::IComponent::pointer nts::Factory::Create(
     const std::string& type, const std::string& value)
 {
     if (constructors().count(type) == 0)

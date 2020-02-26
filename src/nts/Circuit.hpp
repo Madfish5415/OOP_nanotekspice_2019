@@ -10,8 +10,6 @@
 
 #include "Container.hpp"
 
-#include <vector>
-
 namespace nts {
 
 class Circuit : public Container {
@@ -23,7 +21,7 @@ class Circuit : public Container {
     void input(const std::string &name, const std::string &value);
     void simulate();
 
-   protected:
+   private:
     std::map<std::string, Tristate> _results;
 };
 
