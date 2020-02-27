@@ -79,7 +79,7 @@ static void registerAll()
 
 static void errors(int argc, char **argv)
 {
-    if (argc < 3) throw std::logic_error("Not enough arguments");
+    if (argc < 2) throw std::logic_error("Not enough arguments");
 
     std::ifstream file{argv[1]};
 
