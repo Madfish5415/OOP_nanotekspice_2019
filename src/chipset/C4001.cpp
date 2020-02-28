@@ -11,20 +11,20 @@
 
 chipset::C4001::C4001() : nts::Container("4011", {1, 2, 5, 6, 8, 9, 12, 13}, {3, 4, 10, 11})
 {
-    IComponent::pointer or1 = IComponent::pointer(new gate::OR({1, 2}, {3}));
-    IComponent::pointer or2 = IComponent::pointer(new gate::OR({1, 2}, {3}));
-    IComponent::pointer or3 = IComponent::pointer(new gate::OR({1, 2}, {3}));
-    IComponent::pointer or4 = IComponent::pointer(new gate::OR({1, 2}, {3}));
+    IComponent::pointer or1 = IComponent::pointer(new gate::OR({1, 2, 3}, {4}));
+    IComponent::pointer or2 = IComponent::pointer(new gate::OR({1, 2, 3}, {4}));
+    IComponent::pointer or3 = IComponent::pointer(new gate::OR({1, 2, 3}, {4}));
+    IComponent::pointer or4 = IComponent::pointer(new gate::OR({1, 2, 3}, {4}));
 
     IComponent::pointer not1 = IComponent::pointer(new gate::NOT({1}, {2}));
     IComponent::pointer not2 = IComponent::pointer(new gate::NOT({1}, {2}));
     IComponent::pointer not3 = IComponent::pointer(new gate::NOT({1}, {2}));
     IComponent::pointer not4 = IComponent::pointer(new gate::NOT({1}, {2}));
 
-    not1->setLink(1, *or1, 3);
-    not2->setLink(1, *or2, 3);
-    not3->setLink(1, *or3, 3);
-    not4->setLink(1, *or4, 3);
+    not1->setLink(1, *or1, 4);
+    not2->setLink(1, *or2, 4);
+    not3->setLink(1, *or3, 4);
+    not4->setLink(1, *or4, 4);
 
     or1->setLink(1, *this, 1);
     or1->setLink(2, *this, 2);
