@@ -8,18 +8,15 @@
 #ifndef OOP_NANOTEKSPICE_2019_NOR_HPP
 #define OOP_NANOTEKSPICE_2019_NOR_HPP
 
-#include "OR.hpp"
+#include "nts/Container.hpp"
 
-namespace gate {
+namespace component {
 
-class NOR : public OR {
+class NOR : public nts::Container {
    public:
     NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
-
-   public:
-    nts::Tristate compute(std::size_t pin) override;
 };
 
-}  // namespace gate
+}  // namespace component
 
 #endif  // OOP_NANOTEKSPICE_2019_NOR_HPP
