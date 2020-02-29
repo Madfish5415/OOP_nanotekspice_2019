@@ -52,6 +52,15 @@ PROJ_SRC			=		cli/CLI.cpp				\
 							parser/Parser.cpp		\
 							util/string.cpp			\
 
+TEST_SRC			=		gate/test_AND.cpp		\
+							gate/test_OR.cpp		\
+							io/mock/Undefined.cpp	\
+							io/test_Clock.cpp		\
+							io/test_False.cpp		\
+							io/test_Input.cpp		\
+							io/test_Output.cpp		\
+							io/test_True.cpp		\
+
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror
 
