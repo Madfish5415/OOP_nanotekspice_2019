@@ -12,10 +12,12 @@
 
 namespace gate {
 
-   class NOR : public OR {
+class NOR : public OR {
    public:
-    NOR() = default;
-    nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
+    NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
+
+   public:
+    nts::Tristate compute(std::size_t pin) override;
 };
 
 }  // namespace gate

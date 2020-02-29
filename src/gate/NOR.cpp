@@ -7,12 +7,17 @@
 
 #include "NOR.hpp"
 
-nts::Tristate gate::NOR::operate(nts::Tristate t1, nts::Tristate t2)
+gate::NOR::NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+    : OR(INs, OUTs)
 {
-    nts::Tristate result = OR::operate(t1, t2);
+}
 
-    if (result == nts::TRUE) return nts::FALSE;
-    if (result == nts::FALSE) return nts::TRUE;
+nts::Tristate gate::NOR::compute(std::size_t pin)
+{
+    nts::Tristate result = OR::compute(pin);
 
-    return nts::UNDEFINED;
+    if (result == nts::TRUE) result = nts::FALSE;
+    if (result == nts::FALSE) result = nts::TRUE;
+
+    return result;
 }

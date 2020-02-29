@@ -34,6 +34,8 @@ PROJ_SRC			=		cli/CLI.cpp				\
 							chipset/C4081.cpp		\
 							component/DFlipFlop.cpp	\
 							gate/AND.cpp			\
+							gate/NAND.cpp			\
+							gate/NOR.cpp			\
 							gate/NOT.cpp			\
 							gate/OR.cpp				\
 							gate/XOR.cpp			\

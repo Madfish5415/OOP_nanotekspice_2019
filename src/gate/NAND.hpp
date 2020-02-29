@@ -14,8 +14,10 @@ namespace gate {
 
 class NAND : public AND {
    public:
-    NAND() = default;
-    nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
+    NAND(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
+
+   public:
+    nts::Tristate compute(std::size_t pin) override;
 };
 
 }  // namespace gate
