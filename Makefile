@@ -54,8 +54,8 @@ PROJ_SRC			=		cli/CLI.cpp				\
 							parser/Parser.cpp		\
 							util/string.cpp			\
 
-TEST_SRC			=		component/test_NAND.cpp	\
-							component/test_NOR.cpp	\
+TEST_SRC			=		container/test_NAND.cpp	\
+							container/test_NOR.cpp	\
 							gate/test_AND.cpp		\
 							gate/test_NOT.cpp		\
 							gate/test_OR.cpp		\
