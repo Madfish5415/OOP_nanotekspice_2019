@@ -12,7 +12,7 @@
 #include "io/False.hpp"
 #include "io/True.hpp"
 
-Test(NOT, constructNOT_2_pin)
+Test(NOT, constructor_2_pin)
 {
     auto *gate = new gate::NOT({1}, {2});
 

@@ -12,7 +12,7 @@
 #include "io/False.hpp"
 #include "io/True.hpp"
 
-Test(NOR, constructNOR_2_pin)
+Test(NOR, constructor_2_pin)
 {
     auto *container = new container::NOR({1, 2}, {3});
 

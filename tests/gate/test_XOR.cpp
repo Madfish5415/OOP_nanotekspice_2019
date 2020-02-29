@@ -13,7 +13,7 @@
 #include "io/False.hpp"
 #include "io/True.hpp"
 
-Test(XOR, constructXOR_2_pin)
+Test(XOR, constructor_2_pin)
 {
     auto *gate = new gate::XOR({1, 2}, {3});
 
