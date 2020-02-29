@@ -10,7 +10,7 @@
 #include "gate/OR.hpp"
 #include "gate/NOT.hpp"
 
-component::NOR::NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+container::NOR::NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
     : Container("NOR", INs, OUTs)
 {
     IComponent::pointer and1 = IComponent::pointer(new gate::OR(INs, {0}));

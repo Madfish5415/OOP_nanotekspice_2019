@@ -9,7 +9,7 @@
 #include "../gate/AND.hpp"
 #include "DFlipFlop.hpp"
 
-component::DFlipFlop::DFlipFlop() : nts::Container("DFlipFlop", {1, 2, 3, 4}, {5, 6})
+container::DFlipFlop::DFlipFlop() : nts::Container("DFlipFlop", {1, 2, 3, 4}, {5, 6})
 {
     IComponent::pointer not1 = IComponent::pointer(new gate::NOT({1}, {2}));
     IComponent::pointer not2 = IComponent::pointer(new gate::NOT({1}, {2}));
