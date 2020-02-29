@@ -5,7 +5,7 @@
 ** C4013.cpp
 */
 
-#include "../component/DFlipFlop.hpp"
+#include "../container/DFlipFlop.hpp"
 #include "C4013.hpp"
 
 chipset::C4013::C4013() : nts::Container("4013", {3, 4, 5, 6, 8, 9, 10, 11}, {1, 2, 12, 13})
