@@ -10,13 +10,13 @@
 
 #include "../nts/Container.hpp"
 
-namespace component {
+namespace container {
 
 class DFlipFlop : public nts::Container {
    public:
     DFlipFlop();
 };
 
-}  // namespace component
+}  // namespace container
 
 #endif  // OOP_NANOTEKSPICE_2019_DFLIPFLOP_HPP

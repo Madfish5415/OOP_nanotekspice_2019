@@ -10,8 +10,8 @@
 
 chipset::C4013::C4013() : nts::Container("4013", {3, 4, 5, 6, 8, 9, 10, 11}, {1, 2, 12, 13})
 {
-    IComponent::pointer DFlipFlop1 = IComponent::pointer(new component::DFlipFlop());
-    IComponent::pointer DFlipFlop2 = IComponent::pointer(new component::DFlipFlop());
+    IComponent::pointer DFlipFlop1 = IComponent::pointer(new container::DFlipFlop());
+    IComponent::pointer DFlipFlop2 = IComponent::pointer(new container::DFlipFlop());
 
     DFlipFlop1->setLink(1, *this, 6);
     DFlipFlop1->setLink(2, *this, 4);

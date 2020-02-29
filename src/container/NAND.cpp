@@ -10,7 +10,7 @@
 #include "gate/AND.hpp"
 #include "gate/NOT.hpp"
 
-component::NAND::NAND(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
+container::NAND::NAND(const std::set<size_t>& INs, const std::set<size_t>& OUTs)
     : Container("NAND", INs, OUTs)
 {
     IComponent::pointer and1 = IComponent::pointer(new gate::AND(INs, {0}));
