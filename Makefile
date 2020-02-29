@@ -54,24 +54,25 @@ PROJ_SRC			=		cli/CLI.cpp				\
 							parser/Parser.cpp		\
 							util/string.cpp			\
 
-TEST_SRC			=		chipset/test_C4001.cpp	\
-							chipset/test_C4011.cpp	\
-							chipset/test_C4030.cpp	\
-							chipset/test_C4069.cpp	\
-							chipset/test_C4071.cpp	\
-							chipset/test_C4081.cpp	\
-							container/test_NAND.cpp	\
-							container/test_NOR.cpp	\
-							gate/test_AND.cpp		\
-							gate/test_NOT.cpp		\
-							gate/test_OR.cpp		\
-							gate/test_XOR.cpp		\
-							io/mock/Undefined.cpp	\
-							io/test_Clock.cpp		\
-							io/test_False.cpp		\
-							io/test_Input.cpp		\
-							io/test_Output.cpp		\
-							io/test_True.cpp		\
+TEST_SRC			=		chipset/test_C4001.cpp			\
+							chipset/test_C4011.cpp			\
+							chipset/test_C4030.cpp			\
+							chipset/test_C4069.cpp			\
+							chipset/test_C4071.cpp			\
+							chipset/test_C4081.cpp			\
+							container/test_DFlipFlop.cpp	\
+							container/test_NAND.cpp			\
+							container/test_NOR.cpp			\
+							gate/test_AND.cpp				\
+							gate/test_NOT.cpp				\
+							gate/test_OR.cpp				\
+							gate/test_XOR.cpp				\
+							io/mock/Undefined.cpp			\
+							io/test_Clock.cpp				\
+							io/test_False.cpp				\
+							io/test_Input.cpp				\
+							io/test_Output.cpp				\
+							io/test_True.cpp				\
 
 CFLAGS				+=		-I $(INCL_DIR)
 CFLAGS				+=		-W -Wall -Wextra -Werror
