@@ -10,13 +10,13 @@
 
 #include "nts/Container.hpp"
 
-namespace component {
+namespace container {
 
 class NOR : public nts::Container {
    public:
     NOR(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
 };
 
-}  // namespace component
+}  // namespace container
 
 #endif  // OOP_NANOTEKSPICE_2019_NOR_HPP
