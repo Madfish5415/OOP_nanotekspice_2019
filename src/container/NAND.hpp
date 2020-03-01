@@ -8,16 +8,15 @@
 #ifndef OOP_NANOTEKSPICE_2019_NAND_HPP
 #define OOP_NANOTEKSPICE_2019_NAND_HPP
 
-#include "AND.hpp"
+#include "nts/Container.hpp"
 
-namespace gate {
+namespace container {
 
-class NAND : public AND {
+class NAND : public nts::Container {
    public:
-    NAND() = default;
-    nts::Tristate operate(nts::Tristate t1, nts::Tristate t2) override;
+    NAND(const std::set<size_t>& INs, const std::set<size_t>& OUTs);
 };
 
-}  // namespace gate
+}  // namespace container
 
 #endif  // OOP_NANOTEKSPICE_2019_NAND_HPP
