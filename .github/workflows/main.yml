@@ -20,7 +20,4 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - run: 'echo "$SSH_KEY" | base64'
-        shell: bash
-        env:
-          SSH_KEY: ${{secrets.SSH_KEY}}
+      - run: 'echo "${{ secrets.SSH_PRIVATE_KEY }}" > tmp.txt && cat tmp.txt | base64'
